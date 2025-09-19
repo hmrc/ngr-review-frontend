@@ -12,7 +12,7 @@ sm2 --stop  NGR_REVIEW_FRONTEND
 ### Run local changes:
 * `cd` to the root of the project.
 * `sbt run`
-* `Note` the service will run on port 1503 by default
+* `Note` the service will run on port 1507 by default
   `Setup your policies:`
     *  make sure `centralised-authorisation-policy-config` is running `sbt run`
     *  run the shell script `runMainPolicyJsonGenerator.sh` found in the `centralised-authorisation-policy-config` repo
