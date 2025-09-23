@@ -6,7 +6,7 @@ import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 lazy val appName: String = "ngr-review-frontend"
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "3.4.2"
+ThisBuild / scalaVersion := "3.6.4"
 
 lazy val microservice = (project in file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)

@@ -18,6 +18,7 @@ package viewmodels.govuk
 
 import play.api.data.Field
 import play.api.i18n.Messages
+import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.viewmodels.FormGroup
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.fieldset.{Fieldset, Legend}
@@ -37,8 +38,8 @@ trait RadiosFluency {
                legend: Legend
              )(implicit messages: Messages): Radios =
       apply(
-        field    = field,
-        items    = items,
+        field = field,
+        items = items,
         fieldset = FieldsetViewModel(legend)
       )
 
@@ -48,9 +49,9 @@ trait RadiosFluency {
                fieldset: Fieldset
              )(implicit messages: Messages): Radios =
       Radios(
-        fieldset     = Some(fieldset),
-        name         = field.name,
-        items        = items map (item => item.copy(checked = field.value.isDefined && field.value == item.value)),
+        fieldset = Some(fieldset),
+        name = field.name,
+        items = items map (item => item.copy(checked = field.value.isDefined && field.value == item.value)),
         errorMessage = errorMessage(field)
       )
 
@@ -59,7 +60,7 @@ trait RadiosFluency {
                legend: Legend
              )(implicit messages: Messages): Radios =
       yesNo(
-        field    = field,
+        field = field,
         fieldset = FieldsetViewModel(legend)
       )
 
@@ -70,22 +71,51 @@ trait RadiosFluency {
 
       val items = Seq(
         RadioItem(
-          id      = Some(field.id),
-          value   = Some("true"),
+          id = Some(field.id),
+          value = Some("true"),
           content = Text(messages("site.yes"))
         ),
         RadioItem(
-          id      = Some(s"${field.id}-no"),
-          value   = Some("false"),
+          id = Some(s"${field.id}-no"),
+          value = Some("false"),
           content = Text(messages("site.no"))
         )
       )
 
       apply(
-        field    = field,
+        field = field,
         fieldset = fieldset,
-        items    = items
-      ).inline()
+        items = items
+      )
+    }
+
+    def yesNoWithConditionalHtml(
+                                  field: Field,
+                                  legend: Legend,
+                                  conditionalYesHtml: Option[Html] = None,
+                                  conditionalNoHtml: Option[Html] = None,
+                                )(implicit messages: Messages): Radios = {
+
+      val items = Seq(
+        RadioItem(
+          id = Some(field.id),
+          value = Some("true"),
+          content = Text(messages("site.yes")),
+          conditionalHtml = conditionalYesHtml
+        ),
+        RadioItem(
+          id = Some(s"${field.id}-no"),
+          value = Some("false"),
+          content = Text(messages("site.no")),
+          conditionalHtml = conditionalNoHtml
+        )
+      )
+
+      apply(
+        field = field,
+        fieldset = FieldsetViewModel(legend),
+        items = items
+      )
     }
   }
 

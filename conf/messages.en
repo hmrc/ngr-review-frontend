@@ -47,3 +47,18 @@ signedOut.guidance = We did not save your answers.
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
+
+whenChangeTookPlace.heading = Do you know when this change took place?
+whenChangeTookPlace.date.heading = When did this change take place?
+
+whenChangeTookPlace.yes = Yes
+whenChangeTookPlace.no = No
+whenChangeTookPlace.checkYourAnswersLabel = WhenChangeTookPlace
+whenChangeTookPlace.error.required = Select Select yes if you know when the change took place
+whenChangeTookPlace.change.hidden = WhenChangeTookPlace
+whenChangeTookPlace.hint = For example, 27 3 2022
+whenChangeTookPlace.error.required.all = Enter when the change was made
+whenChangeTookPlace.error.required.two =  When you completed the change must include {0} and {1}.
+whenChangeTookPlace.error.required =  When you completed the change must include {0}.
+whenChangeTookPlace.error.invalid = When you completed the change must be a real date.
+whenChangeTookPlace.error.future = When you completed the change must be today or in the past
