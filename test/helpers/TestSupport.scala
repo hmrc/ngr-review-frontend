@@ -16,7 +16,6 @@
 
 package helpers
 
-import mocks.MockAppConfig
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.matchers.must.Matchers
@@ -30,6 +29,7 @@ import uk.gov.hmrc.auth.core.retrieve.{Credentials, Name}
 import uk.gov.hmrc.auth.core.{AffinityGroup, ConfidenceLevel, Nino}
 import uk.gov.hmrc.http.{HeaderCarrier, HeaderNames}
 import connectors.NGRConnector
+import mocks.MockAppConfig
 import models.auth.AuthenticatedUserRequest
 import models.requests.IdentifierRequest
 

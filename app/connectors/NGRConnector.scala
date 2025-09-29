@@ -16,7 +16,7 @@
 
 package connectors
 
-import config.FrontendAppConfig
+import config.{AppConfig, FrontendAppConfig}
 import models.propertyLinking.{PropertyLinkingUserAnswers, VMVProperty}
 import models.registration.{CredId, RatepayerRegistrationValuation}
 import play.api.libs.json.Json
@@ -31,7 +31,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class NGRConnector @Inject()(http: HttpClientV2,
-                             appConfig: FrontendAppConfig,
+                             appConfig: AppConfig,
                             )
                             (implicit ec: ExecutionContext) {
   private def url(path: String): URL = url"${appConfig.nextGenerationRatesUrl}/next-generation-rates/$path"
