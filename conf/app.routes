@@ -19,3 +19,8 @@ GET         /account/sign-out                            controllers.auth.AuthCo
 GET         /account/signed-out                          controllers.auth.SignedOutController.onPageLoad()
 
 GET         /unauthorised                                controllers.UnauthorisedController.onPageLoad()
+
+GET        /review/when-change-took-place                                        controllers.WhenChangeTookPlaceController.onPageLoad(mode: Mode = NormalMode)
+POST       /review/when-change-took-place                                        controllers.WhenChangeTookPlaceController.onSubmit(mode: Mode = NormalMode)
+GET        /review/when-change-took-place                                        controllers.WhenChangeTookPlaceController.onPageLoad(mode: Mode = CheckMode)
+POST       /review/when-change-took-place                                        controllers.WhenChangeTookPlaceController.onSubmit(mode: Mode = CheckMode)

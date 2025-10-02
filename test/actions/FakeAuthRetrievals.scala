@@ -14,21 +14,23 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package actions
+
+import controllers.actions.AuthRetrievals
+import models.auth.AuthenticatedUserRequest
+import play.api.mvc.*
+import uk.gov.hmrc.auth.core.Nino
 
 import javax.inject.Inject
-import models.requests.IdentifierRequest
-import play.api.mvc._
-
 import scala.concurrent.{ExecutionContext, Future}
 
-class FakeIdentifierAction @Inject()(bodyParsers: PlayBodyParsers) extends IdentifierAction {
+class FakeAuthRetrievals @Inject()(bodyParsers: PlayBodyParsers) extends AuthRetrievals {
 
-  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] =
-    block(IdentifierRequest(request, "id"))
-
-  override def parser: BodyParser[AnyContent] =
-    bodyParsers.default
+  override def invokeBlock[A](request: Request[A], block: AuthenticatedUserRequest[A] => Future[Result]): Future[Result] =  {
+    val authRequest = AuthenticatedUserRequest(request, None, None, Some("user@email.com"),  Some("1234"), None, None, nino = Nino(hasNino = true, Some("AA000003D")))
+    block(authRequest)
+  }
+  override def parser: BodyParser[AnyContent] = bodyParsers.defaultBodyParser
 
   override protected def executionContext: ExecutionContext =
     scala.concurrent.ExecutionContext.Implicits.global

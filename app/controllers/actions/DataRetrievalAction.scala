@@ -16,21 +16,33 @@
 
 package controllers.actions
 
+import connectors.NGRConnector
+import models.registration.CredId
+
 import javax.inject.Inject
 import models.requests.{IdentifierRequest, OptionalDataRequest}
 import play.api.mvc.ActionTransformer
 import repositories.SessionRepository
+import uk.gov.hmrc.http.{HeaderCarrier, NotFoundException}
+import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class DataRetrievalActionImpl @Inject()(
-                                         val sessionRepository: SessionRepository
+                                         val sessionRepository: SessionRepository,
+                                         ngrConnector: NGRConnector
                                        )(implicit val executionContext: ExecutionContext) extends DataRetrievalAction {
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = {
 
-    sessionRepository.get(request.userId).map {
-      OptionalDataRequest(request.request, request.userId, _)
+    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+
+    sessionRepository.get(request.credId).flatMap { userAnswersOpt =>
+      ngrConnector.getLinkedProperty(CredId(request.credId)).map {
+        case Some(property) =>
+          OptionalDataRequest(request.request, request.credId, userAnswersOpt, property)
+        case None => throw new NotFoundException("Property not found")
+      }
     }
   }
 }

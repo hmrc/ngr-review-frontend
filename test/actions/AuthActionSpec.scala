@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package actions
 
 import base.SpecBase
 import com.google.inject.Inject
 import config.FrontendAppConfig
+import controllers.actions.{AuthenticatedIdentifierAction, IdentifierAction}
 import controllers.routes
 import play.api.mvc.{Action, AnyContent, BodyParsers, Results}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core._
+import play.api.test.Helpers.*
+import uk.gov.hmrc.auth.core.*
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.auth.core.retrieve.Retrieval
 import uk.gov.hmrc.http.HeaderCarrier
@@ -52,9 +53,8 @@ class AuthActionSpec extends SpecBase {
           val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new MissingBearerToken), appConfig, bodyParsers)
           val controller = new Harness(authAction)
           val result = controller.onPageLoad()(FakeRequest())
-
           status(result) mustBe SEE_OTHER
-          redirectLocation(result).value must startWith(appConfig.loginUrl)
+          redirectLocation(result).value must startWith(appConfig.registrationHost)
         }
       }
     }
@@ -74,7 +74,7 @@ class AuthActionSpec extends SpecBase {
           val result = controller.onPageLoad()(FakeRequest())
 
           status(result) mustBe SEE_OTHER
-          redirectLocation(result).value must startWith(appConfig.loginUrl)
+          redirectLocation(result).value must startWith(appConfig.registrationHost)
         }
       }
     }
