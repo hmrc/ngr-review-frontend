@@ -62,7 +62,7 @@
         legend = Legend(content =messages(("whenChangeTookPlace.heading")), classes = "govuk-fieldset__legend--l").asPageHeading(),
         conditionalYesHtml = Some(govukDateInput(
           DateViewModel(  field  = form("date"),
-            legend = Legend(content = messages("whenChangeTookPlace.date.heading"), classes = "govuk-fieldset__legend--l")
+            legend = Legend(content = messages("whenChangeTookPlace.date.heading"), classes = "govuk-fieldset__legend--m")
           ).withHint(HintViewModel(messages("whenChangeTookPlace.hint")))
         ))
       )

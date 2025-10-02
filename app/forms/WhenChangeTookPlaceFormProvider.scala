@@ -41,11 +41,11 @@ class WhenChangeTookPlaceFormProvider @Inject() extends Mappings {
       mapping(
         "value" -> boolean("whenChangeTookPlace.error.required"),
         "date" -> mandatoryIfTrue("value", localDate(
-          invalidKey     = "whenChangeTookPlace.error.invalid",
-          allRequiredKey = "whenChangeTookPlace.error.required.all",
-          twoRequiredKey = "whenChangeTookPlace.error.required.two",
-          requiredKey    = "whenChangeTookPlace.error.required"
-        ).verifying(maxDate(LocalDate.now(), "whenChangeTookPlace.error.future")))
+          invalidKey     = "whenChangeTookPlace.date.error.invalid",
+          allRequiredKey = "whenChangeTookPlace.date.error.required.all",
+          twoRequiredKey = "whenChangeTookPlace.date.error.required.two",
+          requiredKey    = "whenChangeTookPlace.date.error.required"
+        ).verifying(maxDate(LocalDate.now(), "whenChangeTookPlace.date.error.future")))
       )(WhenChangeTookPlaceData.apply)((x: WhenChangeTookPlaceData) => Some((x.value, x.date)))
     )
 }
