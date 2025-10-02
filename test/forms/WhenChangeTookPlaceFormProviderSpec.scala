@@ -34,7 +34,7 @@ class WhenChangeTookPlaceFormProviderSpec extends OptionFieldBehaviours {
     val fieldName = "value"
     val requiredKey = "whenChangeTookPlace.error.required"
     val dateFieldName = "date"
-    val dateRequiredKey = "whenChangeTookPlace.error.required.all"
+    val dateRequiredKey = "whenChangeTookPlace.date.error.required.all"
 
     "bind mandatory fields" in {
       val result = form.bind(
