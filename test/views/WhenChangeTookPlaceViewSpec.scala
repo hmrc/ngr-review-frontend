@@ -30,7 +30,7 @@ class WhenChangeTookPlaceViewSpec extends ViewBaseSpec{
   implicit val document: Document = Jsoup.parse(view(address = address, form = formProvider(), navigationBarContent = navBarContent(), mode = NormalMode).body)
 
   object Selectors {
-    val address = "#main-content > div > div.govuk-grid-column-two-thirds > span"
+    val address = "#main-content > div > div.govuk-grid-column-two-thirds > form > span"
     val heading = "#main-content > div > div.govuk-grid-column-two-thirds > form > div > fieldset > legend > h1"
     val yes = "#main-content > div > div.govuk-grid-column-two-thirds > form > div > fieldset > div > div:nth-child(1) > label"
     val no = "#main-content > div > div.govuk-grid-column-two-thirds > form > div > fieldset > div > div:nth-child(3) > label"
