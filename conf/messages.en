@@ -1,4 +1,4 @@
-service.name = ngr-review-frontend
+service.name = Manage your business rates valuation
 
 site.back = Back
 site.remove = Remove
@@ -17,6 +17,13 @@ date.year = Year
 date.error.day = day
 date.error.month = month
 date.error.year = year
+
+#NavigationBar
+nav.home=Account home
+nav.signOut=Sign out
+nav.messages=Messages
+nav.actionNeeded=Action needed
+nav.profileAndSettings=Profile and settings
 
 timeout.title = You’re about to be signed out
 timeout.message = For security reasons, you will be signed out of this service in
