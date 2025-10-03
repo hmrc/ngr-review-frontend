@@ -47,7 +47,7 @@
 )
 
 @(address: String, form: Form[?], mode: Mode, navigationBarContent: NavigationBarContent)(implicit request: Request[?], messages: Messages, appConfig: AppConfig)
-@layout(pageTitle = Some(title(form, messages("whenCompleteChange.title"))), showBackLink = true, navigationBarContent = Some(navigationBarContent)) {
+@layout(pageTitle = Some(title(form, messages("whenChangeTookPlace.heading"))), showBackLink = true, navigationBarContent = Some(navigationBarContent)) {
 
   @formHelper(action = routes.WhenChangeTookPlaceController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
