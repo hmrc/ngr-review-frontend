@@ -48,14 +48,13 @@
 
 @(address: String, form: Form[?], mode: Mode, navigationBarContent: NavigationBarContent)(implicit request: Request[?], messages: Messages, appConfig: AppConfig)
 @layout(pageTitle = Some(title(form, messages("whenCompleteChange.title"))), showBackLink = true, navigationBarContent = Some(navigationBarContent)) {
-  <span class="govuk-caption-m">@address</span>
 
   @formHelper(action = routes.WhenChangeTookPlaceController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
     @if(form.errors.nonEmpty) {
       @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
     }
-
+    <span class="govuk-caption-m">@address</span>
     @govukRadios(
       RadiosViewModel.yesNoWithConditionalHtml(
         field  = form("value"),

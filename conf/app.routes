@@ -20,7 +20,7 @@ GET         /account/signed-out                          controllers.auth.Signed
 
 GET         /unauthorised                                controllers.UnauthorisedController.onPageLoad()
 
-GET        /review/when-change-took-place                                        controllers.WhenChangeTookPlaceController.onPageLoad(mode: Mode = NormalMode)
-POST       /review/when-change-took-place                                        controllers.WhenChangeTookPlaceController.onSubmit(mode: Mode = NormalMode)
-GET        /review/when-change-took-place                                        controllers.WhenChangeTookPlaceController.onPageLoad(mode: Mode = CheckMode)
-POST       /review/when-change-took-place                                        controllers.WhenChangeTookPlaceController.onSubmit(mode: Mode = CheckMode)
+GET        /review/when-change-took-place                controllers.WhenChangeTookPlaceController.onPageLoad(mode: Mode = NormalMode)
+POST       /review/when-change-took-place                controllers.WhenChangeTookPlaceController.onSubmit(mode: Mode = NormalMode)
+GET        /review/when-change-took-place                controllers.WhenChangeTookPlaceController.onPageLoad(mode: Mode = CheckMode)
+POST       /review/when-change-took-place                controllers.WhenChangeTookPlaceController.onSubmit(mode: Mode = CheckMode)
