@@ -24,3 +24,6 @@ GET        /review/when-change-took-place                controllers.WhenChangeT
 POST       /review/when-change-took-place                controllers.WhenChangeTookPlaceController.onSubmit(mode: Mode = NormalMode)
 GET        /review/when-change-took-place                controllers.WhenChangeTookPlaceController.onPageLoad(mode: Mode = CheckMode)
 POST       /review/when-change-took-place                controllers.WhenChangeTookPlaceController.onSubmit(mode: Mode = CheckMode)
+
+GET        /manage-business-rates-valuation/review/shop/property-review-complete/:propertyReference  controllers.SubmissionConfirmationController.onPageLoad(propertyReference: String)
+

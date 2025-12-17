@@ -69,3 +69,14 @@ whenChangeTookPlace.date.error.required.two =  When you completed the change mus
 whenChangeTookPlace.date.error.required =  When you completed the change must include a {0}.
 whenChangeTookPlace.date.error.invalid = When you completed the change must be a real date.
 whenChangeTookPlace.date.error.future = When you completed the change must be today or in the past
+
+submissionConfirmation.title = Property review complete
+submissionConfirmation.heading = Property review complete
+submissionConfirmation.ref = Your reference number is
+submissionConfirmation.print = Print this page
+submissionConfirmation.address = Address
+submissionConfirmation.p1 = You told us property details are correct
+submissionConfirmation.next = What happens next
+submissionConfirmation.p2 = We will review the information you sent us. We will contact you if we need to clarify anything or need more details.
+submissionConfirmation.p3 = If you made changes to your property after 1 April 2026 you need to report them within 60 days of completion. You can do this from your account home page.
+submissionConfirmation.goHome = Go to your account home
