@@ -21,6 +21,7 @@ import models.propertyLinking.{VMVProperty, Valuation}
 import java.time.LocalDate
 
 trait TestData {
+  
   val property: VMVProperty = VMVProperty(
     uarn = 11905603000L,
     localAuthorityReference = "2191322564521",
