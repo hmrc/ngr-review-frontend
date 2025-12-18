@@ -50,7 +50,7 @@ class SubmissionConfirmationViewSpec extends ViewBaseSpec {
       elementText(Selectors.addressKey) mustBe "Address"
       elementText(Selectors.addressValue) mustBe address
       elementText(Selectors.whatHappens) mustBe "What happens next"
-      elementText(Selectors.p1) mustBe "You told us property details are correct"
+      elementText(Selectors.p1) mustBe "You told us property details are correct."
       elementText(Selectors.p2) mustBe "We will review the information you sent us. We will contact you if we need to clarify anything or need more details."
       elementText(Selectors.p3) mustBe "If you made changes to your property after 1 April 2026 you need to report them within 60 days of completion. You can do this from your account home page."
       elementText(Selectors.goHome) mustBe "Go to your account home"
