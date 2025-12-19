@@ -16,7 +16,6 @@
 
 package controllers
 
-import base.SpecBase
 import forms.WhenChangeTookPlaceFormProvider
 import helpers.ControllerSpecSupport
 import models.{NormalMode, UserAnswers, WhenChangeTookPlace}

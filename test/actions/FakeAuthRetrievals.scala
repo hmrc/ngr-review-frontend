@@ -27,7 +27,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class FakeAuthRetrievals @Inject()(bodyParsers: PlayBodyParsers) extends AuthRetrievals {
 
   override def invokeBlock[A](request: Request[A], block: AuthenticatedUserRequest[A] => Future[Result]): Future[Result] =  {
-    val authRequest = AuthenticatedUserRequest(request, None, None, Some("user@email.com"),  Some("1234"), None, None, nino = Nino(hasNino = true, Some("AA000003D")))
+    val authRequest = AuthenticatedUserRequest(request, None, None, Some("user@email.com"),  Some("1234"), None, nino = Nino(hasNino = true, Some("AA000003D")))
     block(authRequest)
   }
   override def parser: BodyParser[AnyContent] = bodyParsers.defaultBodyParser

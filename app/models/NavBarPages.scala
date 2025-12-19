@@ -63,7 +63,7 @@ object NavBarPageContents {
 
   def CreateNavBar(contents: NavBarContents, currentPage: NavBarCurrentPage, notifications: Option[Int] = None)(implicit appConfig: AppConfig): NavigationBarContent = {
 
-    val dashboardHomeUrl = s"${appConfig.dashboardHost}/ngr-dashboard-frontend/dashboard"
+    val dashboardHomeUrl = appConfig.dashboardUrl
 
     // Define buttons
     val homePageButton     = NavButton(fieldName = "HomePage", call = Call("GET", dashboardHomeUrl), messageKey = "nav.home", linkId = "Home", selected = currentPage.homePage, notification = None)

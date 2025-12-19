@@ -38,7 +38,7 @@ class DataRetrievalActionImpl @Inject()(
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     sessionRepository.get(request.credId).flatMap { userAnswersOpt =>
-      ngrConnector.getLinkedProperty(CredId(request.credId)).map {
+      ngrConnector.getLinkedProperty.map {
         case Some(property) =>
           OptionalDataRequest(request.request, request.credId, userAnswersOpt, property)
         case None => throw new NotFoundException("Property not found")

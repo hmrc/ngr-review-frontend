@@ -34,7 +34,7 @@ class AuthRetrievalsImpl @Inject()(
                                   )(implicit ec: ExecutionContext) extends AuthRetrievals
   with AuthorisedFunctions {
 
-  type RetrievalsType = Option[Credentials] ~ Option[String] ~ ConfidenceLevel ~ Option[String] ~ Option[AffinityGroup] ~ Option[Name]
+  type RetrievalsType = Option[Credentials] ~ Option[String] ~ ConfidenceLevel ~ Option[String] ~ Option[AffinityGroup]
 
   override def invokeBlock[A](request: Request[A], block: AuthenticatedUserRequest[A] => Future[Result]): Future[Result] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
@@ -44,11 +44,10 @@ class AuthRetrievalsImpl @Inject()(
         Retrievals.nino and
         Retrievals.confidenceLevel and
         Retrievals.email and
-        Retrievals.affinityGroup and
-        Retrievals.name
+        Retrievals.affinityGroup
 
     authorised(ConfidenceLevel.L250).retrieve(retrievals){
-      case credentials ~ Some(nino) ~ confidenceLevel ~ email ~ affinityGroup ~ name =>
+      case credentials ~ Some(nino) ~ confidenceLevel ~ email ~ affinityGroup =>
         block(
           AuthenticatedUserRequest(
             request = request,
@@ -57,8 +56,7 @@ class AuthRetrievalsImpl @Inject()(
             nino = Nino(hasNino = true,Some(nino)),
             email = email.filter(_.nonEmpty),
             credId = credentials.map(_.providerId),
-            affinityGroup = affinityGroup,
-            name = name
+            affinityGroup = affinityGroup
           )
         )
       case _ ~ _ ~ confidenceLevel ~ _ => throw new Exception("confidenceLevel not met")

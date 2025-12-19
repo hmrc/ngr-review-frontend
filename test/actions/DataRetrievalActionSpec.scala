@@ -49,7 +49,7 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with TestData {
         val sessionRepository = mock[SessionRepository]
         val ngrConnector = mock[NGRConnector]
         when(sessionRepository.get(any)).thenReturn(Future(None))
-        when(ngrConnector.getLinkedProperty(any)(any)).thenReturn(Future(Some(property)))
+        when(ngrConnector.getLinkedProperty(any)).thenReturn(Future(Some(property)))
         val action = new Harness(sessionRepository, ngrConnector)
 
         val result = action.callTransform(IdentifierRequest(FakeRequest(), "id", "")).futureValue
@@ -62,7 +62,7 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with TestData {
         val sessionRepository = mock[SessionRepository]
         val ngrConnector = mock[NGRConnector]
         when(sessionRepository.get(any)).thenReturn(Future(None))
-        when(ngrConnector.getLinkedProperty(any)(any)).thenReturn(Future(None))
+        when(ngrConnector.getLinkedProperty(any)).thenReturn(Future(None))
         val action = new Harness(sessionRepository, ngrConnector)
 
         intercept[NotFoundException] {
@@ -78,7 +78,7 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with TestData {
         val sessionRepository = mock[SessionRepository]
         val ngrConnector = mock[NGRConnector]
         when(sessionRepository.get(any)).thenReturn(Future(Some(UserAnswers("id"))))
-        when(ngrConnector.getLinkedProperty(any)(any)).thenReturn(Future(Some(property)))
+        when(ngrConnector.getLinkedProperty(any)).thenReturn(Future(Some(property)))
         val action = new Harness(sessionRepository, ngrConnector)
 
         val result = action.callTransform(new IdentifierRequest(FakeRequest(), "id", "")).futureValue

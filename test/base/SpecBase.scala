@@ -30,6 +30,7 @@ import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.{BodyParser, Call, MessagesControllerComponents}
+import play.api.test.Helpers.stubMessagesControllerComponents
 import play.api.test.{FakeRequest, Injecting}
 import repositories.SessionRepository
 
@@ -42,6 +43,12 @@ trait SpecBase
     with OptionValues
     with ScalaFutures
     with IntegrationPatience {
+
+  val fakeAuth = new FakeIdentifierAction(stubMessagesControllerComponents().parsers)
+
+  def fakeData(answers: Option[UserAnswers]) = new FakeDataRetrievalAction(answers)
+
+  def fakeRequireData(answers: Option[UserAnswers]) = new FakeDataRequiredAction(answers)
 
   val userAnswersId: String = "id"
 
