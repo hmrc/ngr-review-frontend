@@ -27,5 +27,7 @@ POST       /review/when-change-took-place                controllers.WhenChangeT
 
 GET        /manage-business-rates-valuation/review/shop/property-review-complete/:propertyReference  controllers.SubmissionConfirmationController.onPageLoad(propertyReference: String)
 
+GET        /manage-business-rates-valuation/review/shop/declaration/:assessmentId                controllers.DeclarationController.show(assessmentId: AssessmentId)
+POST       /manage-business-rates-valuation/review/shop/declaration/:assessmentId                controllers.DeclarationController.next(assessmentId: AssessmentId)
 
 GET        /review-your-property-details                 controllers.ReviewYourPropertyDetailsController.show

@@ -28,6 +28,7 @@ trait AppConfig {
   val dashboardUrl: String
   val ngrLogoutUrl: String
   val nextGenerationRatesUrl: String
+  val nextGenerationRatesNotifyUrl: String
   val features: Features
 }
 
@@ -52,6 +53,8 @@ class FrontendAppConfig @Inject()(configuration: Configuration, sc: ServicesConf
   override val dashboardUrl: String = s"$dashboardHost/ngr-dashboard-frontend/dashboard"
   override val ngrLogoutUrl: String = s"$dashboardHost/ngr-dashboard-frontend/signout"
   override val nextGenerationRatesUrl: String = sc.baseUrl("next-generation-rates")
+  override val nextGenerationRatesNotifyUrl: String = sc.baseUrl("ngr-notify")
+
   override val features = new Features()(configuration)
 
   override val registrationUrl: String = s"$registrationHost/ngr-login-register-frontend/register"
