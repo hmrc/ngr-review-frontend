@@ -16,16 +16,13 @@
 
 package controllers
 
-import config.AppConfig
 import connectors.NGRConnector
 import helpers.{ControllerSpecSupport, TestData}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import play.api.http.Status.OK
-import play.api.mvc.RequestHeader
 import play.api.test.DefaultAwaitTimeout
 import play.api.test.Helpers.{await, contentAsString, status}
-import uk.gov.hmrc.auth.core.Nino
 import uk.gov.hmrc.http.NotFoundException
 import views.html.ReviewYourPropertyDetailsView
 

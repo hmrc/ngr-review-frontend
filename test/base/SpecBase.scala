@@ -19,7 +19,6 @@ package base
 import actions.*
 import controllers.actions.*
 import models.UserAnswers
-import navigation.{FakeNavigator, Navigator}
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
@@ -29,9 +28,9 @@ import play.api.Application
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.mvc.{BodyParser, Call, MessagesControllerComponents}
+import play.api.mvc.Call
+import play.api.test.FakeRequest
 import play.api.test.Helpers.stubMessagesControllerComponents
-import play.api.test.{FakeRequest, Injecting}
 import repositories.SessionRepository
 
 import scala.concurrent.ExecutionContext

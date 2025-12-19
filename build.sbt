@@ -39,9 +39,7 @@ lazy val microservice = (project in file("."))
     ScoverageKeys.coverageHighlighting := true,
     scalacOptions ++= Seq(
       "-feature",
-      "-Wconf:cat=deprecation:ws,cat=feature:ws,cat=optimizer:ws,src=target/.*:s",
-      "-Wconf:msg=unused import:s",
-      "-Wconf:src=routes/.*:silent", // Suppress warnings from routes files
+      "-Wconf:cat=feature:silent,src=target/.*:silent,msg=unused import:silent,src=routes/.*:silent"
     ),
     libraryDependencies ++= AppDependencies(),
     retrieveManaged := true,
@@ -49,7 +47,7 @@ lazy val microservice = (project in file("."))
     Assets / pipelineStages := Seq(concat)
   )
 
-lazy val testSettings: Seq[Def.Setting[_]] = Seq(
+lazy val testSettings: Seq[Def.Setting[?]] = Seq(
   fork := true,
   unmanagedSourceDirectories += baseDirectory.value / "test-utils"
 )

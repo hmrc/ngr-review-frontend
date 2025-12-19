@@ -21,7 +21,6 @@ import connectors.NGRConnector
 import controllers.actions.DataRetrievalActionImpl
 import helpers.TestData
 import models.UserAnswers
-import models.registration.CredId
 import models.requests.{IdentifierRequest, OptionalDataRequest}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.*
@@ -31,7 +30,6 @@ import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import repositories.SessionRepository
 import uk.gov.hmrc.http.NotFoundException
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class DataRetrievalActionSpec extends SpecBase with MockitoSugar with TestData {

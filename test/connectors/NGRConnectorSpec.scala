@@ -19,7 +19,6 @@ package connectors
 import mocks.MockHttpV2
 import models.registration.*
 import models.registration.ReferenceType.TRN
-import uk.gov.hmrc.http.HttpResponse
 
 import scala.concurrent.Future
 
