@@ -17,19 +17,23 @@
 package helpers
 
 import actions.{FakeDataRequiredAction, FakeDataRetrievalAction, FakeIdentifierAction, FakeRegistrationAction}
-import models.UserAnswers
+import connectors.NGRNotifyConnector
+import models.{AssessmentId, UserAnswers}
 import navigation.Navigator
 import play.api.test.Helpers.stubMessagesControllerComponents
 import repositories.SessionRepository
 import uk.gov.hmrc.http.HeaderCarrier
 
 trait ControllerSpecSupport extends TestSupport with TestData {
-  
+
+  val assessmentId = AssessmentId("85141561000L")
+
   val fakeAuth = new FakeIdentifierAction(stubMessagesControllerComponents().parsers)
   val fakeReg = new FakeRegistrationAction(stubMessagesControllerComponents().parsers)
   def fakeData(answers: Option[UserAnswers]) = new FakeDataRetrievalAction(answers)
   def fakeRequireData(answers: Option[UserAnswers]) = new FakeDataRequiredAction(answers)
   val mockSessionRepository: SessionRepository = mock[SessionRepository]
+  val mockNGRNotifyConnector: NGRNotifyConnector = mock[NGRNotifyConnector]
   val navigator: Navigator = inject[Navigator]
   val emptyUserAnswers: UserAnswers = UserAnswers("id")
 

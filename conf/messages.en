@@ -10,6 +10,7 @@ site.start = Start now
 site.startAgain = Start again
 site.signIn = Sign in
 site.govuk = GOV.UK
+site.acceptAndSend = Accept and send
 
 date.day = Day
 date.month = Month
@@ -87,3 +88,6 @@ reviewYourPropertyDetails.p1 = You should review the details we have about your 
 reviewYourPropertyDetails.p2 = We rely on you to make sure the information we hold about your property and your rental details is correct.
 reviewYourPropertyDetails.p3 = You should upload supporting information to help us understand the updates you tell us about.
 reviewYourPropertyDetails.p4 = Each file must be a PDF or image (JPG or PNG) and be smaller than 25MB. You can email larger files and other file types to us.
+
+declaration.heading = Declaration
+declaration.p1 = By submitting these details, you declare that to the best of your knowledge the information you have given is correct and complete.

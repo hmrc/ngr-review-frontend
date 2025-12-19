@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package config.features
+package models
 
-import play.api.Configuration
+import models.registration.CredId
+import play.api.libs.json.{Format, Json, OFormat}
 
-import javax.inject.Inject
+import java.time.LocalDate
 
-class Features @Inject()(implicit config: Configuration) {
-  val welshLanguageSupportEnabled = new Feature("features.welsh-language-support")
-  val vmvPropertyLookupTestEnabled = new Feature("vmvPropertyLookupTestEnabled.enabled")
-  val bridgeEndpointEnabled = new Feature("features.bridgeEnabled")
+case class ReviewChangesUserAnswers(declarationRef: Option[String] = None)
+
+object ReviewChangesUserAnswers {
+  implicit val format: OFormat[ReviewChangesUserAnswers] = Json.format
 }
