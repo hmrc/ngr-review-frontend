@@ -35,7 +35,6 @@ final case class AuthenticatedUserRequest[A](
                                               override val authProvider: Option[String],
                                               override val email: Option[String],
                                               credId: Option[String],
-                                              name: Option[Name],
                                               affinityGroup: Option[AffinityGroup],
                                               nino: Nino
                                             ) extends BaseUserRequest[A](request, isAuthenticated = true, confidenceLevel, authProvider, email)

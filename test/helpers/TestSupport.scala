@@ -16,6 +16,9 @@
 
 package helpers
 
+import connectors.NGRConnector
+import mocks.MockAppConfig
+import models.requests.IdentifierRequest
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.matchers.must.Matchers
@@ -26,12 +29,8 @@ import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, MessagesControllerComponents}
 import play.api.test.{FakeRequest, Injecting}
 import uk.gov.hmrc.auth.core.retrieve.{Credentials, Name}
-import uk.gov.hmrc.auth.core.{AffinityGroup, ConfidenceLevel, Nino}
+import uk.gov.hmrc.auth.core.{AffinityGroup, ConfidenceLevel}
 import uk.gov.hmrc.http.{HeaderCarrier, HeaderNames}
-import connectors.NGRConnector
-import mocks.MockAppConfig
-import models.auth.AuthenticatedUserRequest
-import models.requests.IdentifierRequest
 
 import scala.concurrent.ExecutionContext
 

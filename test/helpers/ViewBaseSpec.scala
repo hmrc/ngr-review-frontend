@@ -16,6 +16,9 @@
 
 package helpers
 
+import config.AppConfig
+import mocks.MockAppConfig
+import models.{NavBarContents, NavBarCurrentPage, NavBarPageContents, NavigationBarContent}
 import org.jsoup.nodes.{Document, Element}
 import org.scalatest.Assertions.fail
 import org.scalatest.BeforeAndAfterEach
@@ -28,9 +31,6 @@ import play.api.inject.Injector
 import play.api.mvc.{AnyContentAsEmpty, RequestHeader}
 import play.api.test.{FakeRequest, Injecting}
 import uk.gov.hmrc.http.HeaderCarrier
-import config.AppConfig
-import mocks.MockAppConfig
-import models.{NavBarContents, NavBarCurrentPage, NavBarPageContents, NavigationBarContent}
 
 trait ViewBaseSpec extends PlaySpec with GuiceOneAppPerSuite with Injecting with BeforeAndAfterEach with Matchers {
   implicit lazy val messages: Messages = MessagesImpl(Lang("en"), messagesApi)

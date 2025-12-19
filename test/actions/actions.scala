@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,20 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this(
-    layout: templates.Layout
-)
+import uk.gov.hmrc.auth.core.retrieve.~
 
-@()(implicit request: Request[?], messages: Messages)
+package object actions {
 
-@layout(
-    pageTitle = titleNoForm(messages("unauthorised.title")),
-    timeout   = false
-) {
+  implicit class HelperOps[A](a: A) {
+    def ~[B](b: B) = new~(a, b)
+  }
 
-    <h1 class="govuk-heading-xl">@messages("unauthorised.heading")</h1>
-
-    <p class="govuk-body">@messages("unauthorised.guidance")</p>
 }

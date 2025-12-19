@@ -16,6 +16,7 @@
 
 package mocks
 
+import helpers.TestSupport
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{reset, when}
 import org.mockito.stubbing.OngoingStubbing
@@ -23,7 +24,6 @@ import org.mockito.{ArgumentMatchers, Mockito}
 import org.scalatest.BeforeAndAfterEach
 import uk.gov.hmrc.http.StringContextOps
 import uk.gov.hmrc.http.client.{HttpClientV2, RequestBuilder}
-import helpers.TestSupport
 
 import scala.concurrent.Future
 

@@ -21,7 +21,6 @@ import connectors.NGRConnector
 import controllers.actions.DataRetrievalActionImpl
 import helpers.TestData
 import models.UserAnswers
-import models.registration.CredId
 import models.requests.{IdentifierRequest, OptionalDataRequest}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.*
@@ -31,7 +30,6 @@ import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import repositories.SessionRepository
 import uk.gov.hmrc.http.NotFoundException
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class DataRetrievalActionSpec extends SpecBase with MockitoSugar with TestData {
@@ -49,7 +47,7 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with TestData {
         val sessionRepository = mock[SessionRepository]
         val ngrConnector = mock[NGRConnector]
         when(sessionRepository.get(any)).thenReturn(Future(None))
-        when(ngrConnector.getLinkedProperty(any)(any)).thenReturn(Future(Some(property)))
+        when(ngrConnector.getLinkedProperty(any)).thenReturn(Future(Some(property)))
         val action = new Harness(sessionRepository, ngrConnector)
 
         val result = action.callTransform(IdentifierRequest(FakeRequest(), "id", "")).futureValue
@@ -62,7 +60,7 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with TestData {
         val sessionRepository = mock[SessionRepository]
         val ngrConnector = mock[NGRConnector]
         when(sessionRepository.get(any)).thenReturn(Future(None))
-        when(ngrConnector.getLinkedProperty(any)(any)).thenReturn(Future(None))
+        when(ngrConnector.getLinkedProperty(any)).thenReturn(Future(None))
         val action = new Harness(sessionRepository, ngrConnector)
 
         intercept[NotFoundException] {
@@ -78,7 +76,7 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with TestData {
         val sessionRepository = mock[SessionRepository]
         val ngrConnector = mock[NGRConnector]
         when(sessionRepository.get(any)).thenReturn(Future(Some(UserAnswers("id"))))
-        when(ngrConnector.getLinkedProperty(any)(any)).thenReturn(Future(Some(property)))
+        when(ngrConnector.getLinkedProperty(any)).thenReturn(Future(Some(property)))
         val action = new Harness(sessionRepository, ngrConnector)
 
         val result = action.callTransform(new IdentifierRequest(FakeRequest(), "id", "")).futureValue

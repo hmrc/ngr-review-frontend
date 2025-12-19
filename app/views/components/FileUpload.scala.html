@@ -19,7 +19,7 @@
 @this(govukFileUpload : GovukFileUpload)
 
 @(
-form: Form[_],
+form: Form[?],
 errorMessage: Option[String],
 id: String,
 name: String,
@@ -37,7 +37,7 @@ id,
 name,
 classes = classes.fold("")(x => x),
 label = Label(
-content = Text(messages(label, headingMessageArgs:_*)),
+content = Text(messages(label, headingMessageArgs*)),
 isPageHeading = isPageHeading,
 classes = if(isPageHeading) "govuk-label--l" else if (labelHidden) "govuk-visually-hidden" else ""
 ),
