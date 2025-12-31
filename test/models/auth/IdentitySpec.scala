@@ -19,13 +19,13 @@ package models.auth
 import org.scalatest.freespec.AnyFreeSpec
 
 class IdentitySpec extends AnyFreeSpec {
-  
+
   "Identity" - {
 
     "must serialize and deserialize to/from JSON" in {
       val identity = Identity(provider = "TestProvider", None, None)
 
-      val json = Identity.format.writes(identity)
+      val json                   = Identity.format.writes(identity)
       val deserializedIdentifier = Identity.format.reads(json).get
 
       assert(deserializedIdentifier == identity)

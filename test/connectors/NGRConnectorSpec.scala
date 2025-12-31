@@ -24,17 +24,17 @@ import scala.concurrent.Future
 
 class NGRConnectorSpec extends MockHttpV2 {
   val ngrConnector: NGRConnector = new NGRConnector(mockHttpClientV2, mockConfig)
-  val email: Email = Email("hello@me.com")
-  val trn: TRNReferenceNumber = TRNReferenceNumber(TRN, "1234")
-  val credId: CredId = CredId("1234")
+  val email: Email               = Email("hello@me.com")
+  val trn: TRNReferenceNumber    = TRNReferenceNumber(TRN, "1234")
+  val credId: CredId             = CredId("1234")
 
   "getRatepayer" when {
     "Successfully return a Ratepayer" in {
-      val ratepayer: RatepayerRegistration = RatepayerRegistration()
-      val response: RatepayerRegistrationValuation = RatepayerRegistrationValuation(credId, Some(ratepayer))
+      val ratepayer: RatepayerRegistration                       = RatepayerRegistration()
+      val response: RatepayerRegistrationValuation               = RatepayerRegistrationValuation(credId, Some(ratepayer))
       setupMockHttpV2Get(s"${mockConfig.nextGenerationRatesUrl}/next-generation-rates/get-ratepayer")(Some(response))
       val result: Future[Option[RatepayerRegistrationValuation]] = ngrConnector.getRatepayer(credId)
-      result.futureValue.get.credId mustBe credId
+      result.futureValue.get.credId                mustBe credId
       result.futureValue.get.ratepayerRegistration mustBe Some(ratepayer)
     }
     "ratepayer not found" in {
@@ -44,5 +44,3 @@ class NGRConnectorSpec extends MockHttpV2 {
     }
   }
 }
-
-

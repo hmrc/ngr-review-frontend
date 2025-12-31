@@ -29,7 +29,7 @@ import scala.concurrent.Future
 
 trait MockHttpV2 extends TestSupport with BeforeAndAfterEach {
 
-  lazy val mockHttpClientV2: HttpClientV2 = Mockito.mock(classOf[HttpClientV2])
+  lazy val mockHttpClientV2: HttpClientV2     = Mockito.mock(classOf[HttpClientV2])
   lazy val mockRequestBuilder: RequestBuilder = Mockito.mock(classOf[RequestBuilder])
 
   override def beforeEach(): Unit = {
@@ -53,8 +53,6 @@ trait MockHttpV2 extends TestSupport with BeforeAndAfterEach {
     when(mockRequestBuilder.execute[T](using ArgumentMatchers.any(), ArgumentMatchers.any()))
       .thenReturn(Future.successful(response))
   }
-
-
 
   def setupMockFailedHttpV2Get[T](url: String): OngoingStubbing[Future[T]] = {
     when(mockHttpClientV2

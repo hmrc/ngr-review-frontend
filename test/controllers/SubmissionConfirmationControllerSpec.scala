@@ -35,16 +35,16 @@ class SubmissionConfirmationControllerSpec extends SpecBase with SummaryListFlue
   "SubmissionConfirmationController" - {
     "must return OK and the correct view for a GET" in {
       when(mockSessionRepository.clear(any())).thenReturn(Future.successful(true))
-      val ref = "1234-1234-1234"
+      val ref         = "1234-1234-1234"
       val application = applicationBuilder().build()
 
       implicit val appConfig: FrontendAppConfig = application.injector.instanceOf[FrontendAppConfig]
       running(application) {
         val request = FakeRequest(GET, routes.SubmissionConfirmationController.onPageLoad(ref).url)
-        val result = route(application, request).value
-        val view = application.injector.instanceOf[SubmissionConfirmationView]
+        val result  = route(application, request).value
+        val view    = application.injector.instanceOf[SubmissionConfirmationView]
 
-        status(result) mustEqual OK
+        status(result)          mustEqual OK
         contentAsString(result) mustEqual view(property.addressFull, "1234-1234-1234", createDefaultNavBar())(request, messages(application)).toString
       }
     }

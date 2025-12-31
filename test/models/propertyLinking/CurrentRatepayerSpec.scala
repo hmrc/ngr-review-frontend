@@ -25,34 +25,33 @@ class CurrentRatepayerSpec extends AnyFreeSpec {
   "CurrentRatepayer JSON format" - {
     "serialize and deserialize correctly with becomeRatepayerDate present" in {
       val model = CurrentRatepayer(isBeforeApril = true, becomeRatepayerDate = Some("2025-04-01"))
-      val json = Json.toJson(model)
+      val json  = Json.toJson(model)
       json.as[CurrentRatepayer] mustEqual model
     }
 
     "serialize and deserialize correctly with becomeRatepayerDate as None" in {
       val model = CurrentRatepayer(isBeforeApril = false, becomeRatepayerDate = None)
-      val json = Json.toJson(model)
+      val json  = Json.toJson(model)
       json.as[CurrentRatepayer] mustEqual model
     }
 
     "deserialize from JSON with all fields" in {
       val json = Json.parse("""
-        |{
-        |  "isBeforeApril": true,
-        |  "becomeRatepayerDate": "2025-04-01"
-        |}
+                              |{
+                              |  "isBeforeApril": true,
+                              |  "becomeRatepayerDate": "2025-04-01"
+                              |}
       """.stripMargin)
       json.validate[CurrentRatepayer] mustEqual JsSuccess(CurrentRatepayer(true, Some("2025-04-01")))
     }
 
     "deserialize from JSON with becomeRatepayerDate missing (None)" in {
       val json = Json.parse("""
-        |{
-        |  "isBeforeApril": false
-        |}
+                              |{
+                              |  "isBeforeApril": false
+                              |}
       """.stripMargin)
       json.validate[CurrentRatepayer] mustEqual JsSuccess(CurrentRatepayer(false, None))
     }
   }
 }
-

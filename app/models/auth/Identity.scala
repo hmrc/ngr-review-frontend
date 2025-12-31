@@ -19,9 +19,11 @@ package models.auth
 import models.forms.Nino
 import play.api.libs.json.{Json, OFormat}
 
-final case class Identity(provider: String,
-                    nino: Option[Nino],
-                    level: Option[String])
+final case class Identity(
+  provider: String,
+  nino: Option[Nino],
+  level: Option[String]
+)
 
 object Identity {
   implicit val format: OFormat[Identity] = Json.format[Identity]

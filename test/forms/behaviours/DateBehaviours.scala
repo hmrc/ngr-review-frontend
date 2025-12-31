@@ -24,13 +24,11 @@ import java.time.format.DateTimeFormatter
 
 class DateBehaviours extends FieldBehaviours {
 
-  def dateField(form: Form[?], key: String, validData: Gen[LocalDate]): Unit = {
+  def dateField(form: Form[?], key: String, validData: Gen[LocalDate]): Unit =
 
-    "bind valid data" in {
-
+    "bind valid data" in
       forAll(validData -> "valid date") {
         (date: LocalDate) =>
-
           val data = Map(
             s"$key.day"   -> date.getDayOfMonth.toString,
             s"$key.month" -> date.getMonthValue.toString,
@@ -40,12 +38,10 @@ class DateBehaviours extends FieldBehaviours {
           val result = form.bind(data)
 
           result.value.value mustEqual date
-          result.errors mustBe empty
+          result.errors         mustBe empty
       }
-    }
-  }
 
-  def dateFieldWithMax(form: Form[?], key: String, max: LocalDate, formError: FormError): Unit = {
+  def dateFieldWithMax(form: Form[?], key: String, max: LocalDate, formError: FormError): Unit =
 
     s"fail to bind a date greater than ${max.format(DateTimeFormatter.ISO_LOCAL_DATE)}" in {
 
@@ -53,7 +49,6 @@ class DateBehaviours extends FieldBehaviours {
 
       forAll(generator -> "invalid dates") {
         (date: LocalDate) =>
-
           val data = Map(
             s"$key.day"   -> date.getDayOfMonth.toString,
             s"$key.month" -> date.getMonthValue.toString,
@@ -65,9 +60,8 @@ class DateBehaviours extends FieldBehaviours {
           result.errors must contain only formError
       }
     }
-  }
 
-  def dateFieldWithMin(form: Form[?], key: String, min: LocalDate, formError: FormError): Unit = {
+  def dateFieldWithMin(form: Form[?], key: String, min: LocalDate, formError: FormError): Unit =
 
     s"fail to bind a date earlier than ${min.format(DateTimeFormatter.ISO_LOCAL_DATE)}" in {
 
@@ -75,7 +69,6 @@ class DateBehaviours extends FieldBehaviours {
 
       forAll(generator -> "invalid dates") {
         (date: LocalDate) =>
-
           val data = Map(
             s"$key.day"   -> date.getDayOfMonth.toString,
             s"$key.month" -> date.getMonthValue.toString,
@@ -87,9 +80,8 @@ class DateBehaviours extends FieldBehaviours {
           result.errors must contain only formError
       }
     }
-  }
 
-  def mandatoryDateField(form: Form[?], key: String, requiredAllKey: String, errorArgs: Seq[String] = Seq.empty): Unit = {
+  def mandatoryDateField(form: Form[?], key: String, requiredAllKey: String, errorArgs: Seq[String] = Seq.empty): Unit =
 
     "fail to bind an empty date" in {
 
@@ -97,5 +89,4 @@ class DateBehaviours extends FieldBehaviours {
 
       result.errors must contain only FormError(key, requiredAllKey, errorArgs)
     }
-  }
 }

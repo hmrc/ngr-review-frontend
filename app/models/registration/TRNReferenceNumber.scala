@@ -18,8 +18,10 @@ package models.registration
 
 import play.api.libs.json.{Json, OFormat}
 
-case class TRNReferenceNumber(referenceType: ReferenceType,
-                              value: String)
+case class TRNReferenceNumber(
+  referenceType: ReferenceType,
+  value: String
+)
 
 object TRNReferenceNumber {
   implicit val format: OFormat[TRNReferenceNumber] = Json.format[TRNReferenceNumber]

@@ -24,28 +24,28 @@ import views.html.ReviewYourPropertyDetailsView
 
 class ReviewYourPropertyDetailsViewSpec extends ViewBaseSpec {
   lazy val view: ReviewYourPropertyDetailsView = inject[ReviewYourPropertyDetailsView]
-  val content: NavigationBarContent = NavBarPageContents.createDefaultNavBar
-  val address = "Bug Me Not PVT LTD, RODLEY LANE, RODLEY, LEEDS, BH1 1HU"
+  val content: NavigationBarContent            = NavBarPageContents.createDefaultNavBar
+  val address                                  = "Bug Me Not PVT LTD, RODLEY LANE, RODLEY, LEEDS, BH1 1HU"
 
   object Selectors {
     val homeButton = "#secondary-nav > a > span"
-    val signOut = "#secondary-nav > ul > li > a"
-    val navTitle = "head > title"
-    val address = "#main-content > div > div > span"
-    val heading = "#main-content > div > div > h1"
-    val p1 = "#main-content > div > div > p:nth-child(3)"
-    val p2 = "#main-content > div > div > p:nth-child(4)"
-    val p3 = "#main-content > div > div > p:nth-child(5)"
-    val p4 = "#main-content > div > div > p:nth-child(6)"
-    val continue = "#continue"
+    val signOut    = "#secondary-nav > ul > li > a"
+    val navTitle   = "head > title"
+    val address    = "#main-content > div > div > span"
+    val heading    = "#main-content > div > div > h1"
+    val p1         = "#main-content > div > div > p:nth-child(3)"
+    val p2         = "#main-content > div > div > p:nth-child(4)"
+    val p3         = "#main-content > div > div > p:nth-child(5)"
+    val p4         = "#main-content > div > div > p:nth-child(6)"
+    val continue   = "#continue"
   }
 
   "ReviewYourPropertyDetailsView" must {
-    val reviewYourPropertyDetailsView = view(content, address)
-    lazy implicit val document: Document = Jsoup.parse(reviewYourPropertyDetailsView.body)
-    val htmlApply = view.apply(content, address).body
-    val htmlRender = view.render(content, address, request, messages, mockConfig).body
-    lazy val htmlF = view.f(content, address)
+    val reviewYourPropertyDetailsView    = view(content, address)
+    implicit lazy val document: Document = Jsoup.parse(reviewYourPropertyDetailsView.body)
+    val htmlApply                        = view.apply(content, address).body
+    val htmlRender                       = view.render(content, address, request, messages, mockConfig).body
+    lazy val htmlF                       = view.f(content, address)
 
     "htmlF is not empty" in {
       htmlF.toString() must not be empty
@@ -72,10 +72,14 @@ class ReviewYourPropertyDetailsViewSpec extends ViewBaseSpec {
       elementText(Selectors.heading) mustBe "Review your property details"
     }
     "show body" in {
-      elementText(Selectors.p1) mustBe "You should review the details we have about your property to make sure they are correct and change anything you need to."
+      elementText(
+        Selectors.p1
+      )                         mustBe "You should review the details we have about your property to make sure they are correct and change anything you need to."
       elementText(Selectors.p2) mustBe "We rely on you to make sure the information we hold about your property and your rental details is correct."
       elementText(Selectors.p3) mustBe "You should upload supporting information to help us understand the updates you tell us about."
-      elementText(Selectors.p4) mustBe "Each file must be a PDF or image (JPG or PNG) and be smaller than 25MB. You can email larger files and other file types to us."
+      elementText(
+        Selectors.p4
+      )                         mustBe "Each file must be a PDF or image (JPG or PNG) and be smaller than 25MB. You can email larger files and other file types to us."
     }
     "show continue button" in {
       elementText(Selectors.continue) mustBe "Continue"

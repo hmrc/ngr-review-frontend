@@ -29,38 +29,40 @@ import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RegistrationActionImpl @Inject()(
-                                        ngrConnector: NGRConnector,
-                                        authenticate: IdentifierAction,
-                                        appConfig: FrontendAppConfig,
-                                        val parser: BodyParsers.Default
-                                  )(implicit val executionContext: ExecutionContext) extends RegistrationAction {
+class RegistrationActionImpl @Inject() (
+  ngrConnector: NGRConnector,
+  authenticate: IdentifierAction,
+  appConfig: FrontendAppConfig,
+  val parser: BodyParsers.Default
+)(implicit val executionContext: ExecutionContext
+) extends RegistrationAction {
 
-  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
+  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] =
 
-    authenticate.invokeBlock(request, { implicit authRequest: IdentifierRequest[A] =>
-      implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(authRequest, authRequest.session)
+    authenticate.invokeBlock(
+      request,
+      { implicit authRequest: IdentifierRequest[A] =>
+        implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(authRequest, authRequest.session)
 
-      val credId = CredId(authRequest.credId)
+        val credId = CredId(authRequest.credId)
 
-      ngrConnector.getRatepayer(credId).flatMap{ maybeRatepayer =>
-        val isRegistered = maybeRatepayer
-          .flatMap(_.ratepayerRegistration)
-          .flatMap(_.isRegistered)
-          .getOrElse(false)
+        ngrConnector.getRatepayer(credId).flatMap { maybeRatepayer =>
+          val isRegistered = maybeRatepayer
+            .flatMap(_.ratepayerRegistration)
+            .flatMap(_.isRegistered)
+            .getOrElse(false)
 
-        if (isRegistered) {
-          block(authRequest.copy())
-        } else {
-         redirectToRegister()
+          if (isRegistered) {
+            block(authRequest.copy())
+          } else {
+            redirectToRegister()
+          }
         }
       }
-    })
-  }
+    )
 
-  private def redirectToRegister(): Future[Result] = {
+  private def redirectToRegister(): Future[Result] =
     Future.successful(Redirect(s"${appConfig.registrationHost}/ngr-login-register-frontend/register"))
-  }
 }
 
 @ImplementedBy(classOf[RegistrationActionImpl])

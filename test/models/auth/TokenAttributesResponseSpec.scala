@@ -19,13 +19,20 @@ package models.auth
 import org.scalatest.freespec.AnyFreeSpec
 
 class TokenAttributesResponseSpec extends AnyFreeSpec {
-  
+
   "TokenAttributesResponse" - {
     "must serialize and deserialize to/from JSON" in {
-      val tokenAttributesResponse = TokenAttributesResponse(authenticationProvider = "", name = Some("SomeValue"), email = None, identity = Some(Identity("TestProvider", None, None)),
-        enrolments = Set.empty, "Test Enrolment", Some("Activated"))
-      val json = TokenAttributesResponse.format.writes(tokenAttributesResponse)
-      val deserializedResponse = TokenAttributesResponse.format.reads(json).get
+      val tokenAttributesResponse = TokenAttributesResponse(
+        authenticationProvider = "",
+        name = Some("SomeValue"),
+        email = None,
+        identity = Some(Identity("TestProvider", None, None)),
+        enrolments = Set.empty,
+        "Test Enrolment",
+        Some("Activated")
+      )
+      val json                    = TokenAttributesResponse.format.writes(tokenAttributesResponse)
+      val deserializedResponse    = TokenAttributesResponse.format.reads(json).get
 
       assert(deserializedResponse == tokenAttributesResponse)
     }

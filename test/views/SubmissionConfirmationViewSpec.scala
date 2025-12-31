@@ -23,37 +23,37 @@ import views.html.SubmissionConfirmationView
 
 class SubmissionConfirmationViewSpec extends ViewBaseSpec {
   val view: SubmissionConfirmationView = inject[SubmissionConfirmationView]
-  val address = "123 street lane"
-  val ref = "1234-1234-1234"
+  val address                          = "123 street lane"
+  val ref                              = "1234-1234-1234"
 
   object Selectors {
-    val heading = "#main-content > div > div.govuk-grid-column-two-thirds > div > h1"
-    val reference = "#main-content > div > div.govuk-grid-column-two-thirds > div > div"
-    val print = "#printPage > a"
-    val addressKey = "#main-content > div > div.govuk-grid-column-two-thirds > dl > div > dt"
+    val heading      = "#main-content > div > div.govuk-grid-column-two-thirds > div > h1"
+    val reference    = "#main-content > div > div.govuk-grid-column-two-thirds > div > div"
+    val print        = "#printPage > a"
+    val addressKey   = "#main-content > div > div.govuk-grid-column-two-thirds > dl > div > dt"
     val addressValue = "#main-content > div > div.govuk-grid-column-two-thirds > dl > div > dd"
-    val whatHappens = "#main-content > div > div.govuk-grid-column-two-thirds > h2"
-    val p1 = "#main-content > div > div.govuk-grid-column-two-thirds > p:nth-child(4)"
-    val p2 = "#main-content > div > div.govuk-grid-column-two-thirds > p:nth-child(6)"
-    val p3 = "#main-content > div > div.govuk-grid-column-two-thirds > p:nth-child(7)"
-    val goHome = "#main-content > div > div.govuk-grid-column-two-thirds > a"
+    val whatHappens  = "#main-content > div > div.govuk-grid-column-two-thirds > h2"
+    val p1           = "#main-content > div > div.govuk-grid-column-two-thirds > p:nth-child(4)"
+    val p2           = "#main-content > div > div.govuk-grid-column-two-thirds > p:nth-child(6)"
+    val p3           = "#main-content > div > div.govuk-grid-column-two-thirds > p:nth-child(7)"
+    val goHome       = "#main-content > div > div.govuk-grid-column-two-thirds > a"
   }
 
   "SubmissionConfirmationView" must {
-    val dashboardView = view(address, ref, navBarContent())
-    lazy implicit val document: Document = Jsoup.parse(dashboardView.body)
+    val dashboardView                    = view(address, ref, navBarContent())
+    implicit lazy val document: Document = Jsoup.parse(dashboardView.body)
 
     "show correct text" in {
-      elementText(Selectors.heading) mustBe "Property review complete"
-      elementText(Selectors.reference) mustBe s"Your reference number is $ref"
-      elementText(Selectors.print) mustBe "Print this page"
-      elementText(Selectors.addressKey) mustBe "Address"
+      elementText(Selectors.heading)      mustBe "Property review complete"
+      elementText(Selectors.reference)    mustBe s"Your reference number is $ref"
+      elementText(Selectors.print)        mustBe "Print this page"
+      elementText(Selectors.addressKey)   mustBe "Address"
       elementText(Selectors.addressValue) mustBe address
-      elementText(Selectors.whatHappens) mustBe "What happens next"
-      elementText(Selectors.p1) mustBe "You told us property details are correct."
-      elementText(Selectors.p2) mustBe "We will review the information you sent us. We will contact you if we need to clarify anything or need more details."
-      elementText(Selectors.p3) mustBe "If you made changes to your property after 1 April 2026 you need to report them within 60 days of completion. You can do this from your account home page."
-      elementText(Selectors.goHome) mustBe "Go to your account home"
+      elementText(Selectors.whatHappens)  mustBe "What happens next"
+      elementText(Selectors.p1)           mustBe "You told us property details are correct."
+      elementText(Selectors.p2)           mustBe "We will review the information you sent us. We will contact you if we need to clarify anything or need more details."
+      elementText(Selectors.p3)           mustBe "If you made changes to your property after 1 April 2026 you need to report them within 60 days of completion. You can do this from your account home page."
+      elementText(Selectors.goHome)       mustBe "Go to your account home"
     }
 
   }

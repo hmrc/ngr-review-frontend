@@ -18,8 +18,10 @@ package models.registration
 
 import play.api.libs.json.{Json, OFormat}
 
-case class RatepayerRegistrationValuation(credId: CredId,
-                                          ratepayerRegistration: Option[RatepayerRegistration] = None)
+case class RatepayerRegistrationValuation(
+  credId: CredId,
+  ratepayerRegistration: Option[RatepayerRegistration] = None
+)
 
 object RatepayerRegistrationValuation {
   implicit val format: OFormat[RatepayerRegistrationValuation] = Json.format[RatepayerRegistrationValuation]

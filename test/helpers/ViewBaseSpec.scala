@@ -16,8 +16,7 @@
 
 package helpers
 
-import config.AppConfig
-import mocks.MockAppConfig
+import config.{AppConfig, FrontendAppConfig}
 import models.{NavBarContents, NavBarCurrentPage, NavBarPageContents, NavigationBarContent}
 import org.jsoup.nodes.{Document, Element}
 import org.scalatest.Assertions.fail
@@ -34,8 +33,9 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 trait ViewBaseSpec extends PlaySpec with GuiceOneAppPerSuite with Injecting with BeforeAndAfterEach with Matchers {
   implicit lazy val messages: Messages = MessagesImpl(Lang("en"), messagesApi)
-  lazy val messagesApi: MessagesApi = inject[MessagesApi]
-  def injector: Injector = app.injector
+  lazy val messagesApi: MessagesApi    = inject[MessagesApi]
+  def injector: Injector               = app.injector
+
   def element(cssSelector: String)(implicit document: Document): Element = {
     val elements = document.select(cssSelector)
 
@@ -46,10 +46,8 @@ trait ViewBaseSpec extends PlaySpec with GuiceOneAppPerSuite with Injecting with
     document.select(cssSelector).first()
   }
 
-
-  def elementText(selector: String)(implicit document: Document): String = {
+  def elementText(selector: String)(implicit document: Document): String =
     element(selector).text()
-  }
 
   def navBarContent()(implicit appConfig: AppConfig): NavigationBarContent = NavBarPageContents.CreateNavBar(
     contents = NavBarContents(
@@ -62,8 +60,8 @@ trait ViewBaseSpec extends PlaySpec with GuiceOneAppPerSuite with Injecting with
     notifications = Some(1)
   )
 
-  lazy implicit val mockConfig: MockAppConfig = new MockAppConfig(app.configuration)
-  implicit val requestHeader: RequestHeader = mock[RequestHeader]
-  lazy implicit val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
-  implicit val hc: HeaderCarrier = HeaderCarrier()
+  implicit lazy val mockConfig: FrontendAppConfig                = app.injector.instanceOf[FrontendAppConfig]
+  implicit val requestHeader: RequestHeader                      = mock[RequestHeader]
+  implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+  implicit val hc: HeaderCarrier                                 = HeaderCarrier()
 }

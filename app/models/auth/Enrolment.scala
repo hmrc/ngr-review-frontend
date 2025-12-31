@@ -18,10 +18,12 @@ package models.auth
 
 import play.api.libs.json.{Json, OFormat}
 
-final case class Enrolment(service:      String,
-                     identifiers:  Seq[Identifier],
-                     friendlyName: String,
-                     state:        String)
+final case class Enrolment(
+  service: String,
+  identifiers: Seq[Identifier],
+  friendlyName: String,
+  state: String
+)
 
 object Enrolment {
   implicit val format: OFormat[Enrolment] = Json.format[Enrolment]

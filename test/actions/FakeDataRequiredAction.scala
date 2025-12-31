@@ -26,15 +26,15 @@ import play.api.mvc.*
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class FakeDataRequiredAction @Inject()(userAnswers: Option[UserAnswers])(implicit val executionContext: ExecutionContext)
-  extends DataRequiredAction with TestData {
+class FakeDataRequiredAction @Inject() (userAnswers: Option[UserAnswers])(implicit val executionContext: ExecutionContext)
+  extends DataRequiredAction
+  with TestData {
 
-  override protected def refine[A](request: OptionalDataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
+  override protected def refine[A](request: OptionalDataRequest[A]): Future[Either[Result, DataRequest[A]]] =
     userAnswers match {
-      case None =>
+      case None       =>
         Future.successful(Left(Results.Redirect(routes.JourneyRecoveryController.onPageLoad())))
       case Some(data) =>
         Future.successful(Right(DataRequest(request.request, request.userId, data, request.property)))
     }
-  }
 }

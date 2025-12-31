@@ -27,7 +27,6 @@ import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
 
 import java.time.LocalDate
 
-
 case class WhenChangeTookPlaceData(value: Boolean, date: Option[LocalDate])
 
 object WhenChangeTookPlaceData {
@@ -40,12 +39,15 @@ class WhenChangeTookPlaceFormProvider @Inject() extends Mappings {
     Form(
       mapping(
         "value" -> boolean("whenChangeTookPlace.error.required"),
-        "date" -> mandatoryIfTrue("value", localDate(
-          invalidKey     = "whenChangeTookPlace.date.error.invalid",
-          allRequiredKey = "whenChangeTookPlace.date.error.required.all",
-          twoRequiredKey = "whenChangeTookPlace.date.error.required.two",
-          requiredKey    = "whenChangeTookPlace.date.error.required"
-        ).verifying(maxDate(LocalDate.now(), "whenChangeTookPlace.date.error.future")))
+        "date"  -> mandatoryIfTrue(
+          "value",
+          localDate(
+            invalidKey = "whenChangeTookPlace.date.error.invalid",
+            allRequiredKey = "whenChangeTookPlace.date.error.required.all",
+            twoRequiredKey = "whenChangeTookPlace.date.error.required.two",
+            requiredKey = "whenChangeTookPlace.date.error.required"
+          ).verifying(maxDate(LocalDate.now(), "whenChangeTookPlace.date.error.future"))
+        )
       )(WhenChangeTookPlaceData.apply)((x: WhenChangeTookPlaceData) => Some((x.value, x.date)))
     )
 }

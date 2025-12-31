@@ -26,13 +26,13 @@ import uk.gov.hmrc.auth.core.retrieve.Name
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class FakeRegistrationAction @Inject()(bodyParsers: PlayBodyParsers) extends RegistrationAction {
+class FakeRegistrationAction @Inject() (bodyParsers: PlayBodyParsers) extends RegistrationAction {
 
-  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] =  {
+  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
     val authRequest = IdentifierRequest(request, "id", "id")
     block(authRequest)
   }
-  override def parser: BodyParser[AnyContent] = bodyParsers.defaultBodyParser
+  override def parser: BodyParser[AnyContent]                                                                     = bodyParsers.defaultBodyParser
 
   override protected def executionContext: ExecutionContext =
     scala.concurrent.ExecutionContext.Implicits.global

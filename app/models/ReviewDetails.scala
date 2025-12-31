@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-package models.propertyLinking
+package models
 
-import play.api.libs.json.{Format, Json}
+import models.propertyLinking.VMVProperty
+import models.registration.RatepayerRegistrationValuation
+import play.api.libs.json.{Json, OFormat}
+import java.time.LocalDate
 
-final case class CurrentRatepayer(isBeforeApril: Boolean, becomeRatepayerDate: Option[String])
+final case class ReviewDetails(address: String)
 
-object CurrentRatepayer {
-  implicit val format: Format[CurrentRatepayer] = Json.format[CurrentRatepayer]
+object ReviewDetails {
+  implicit val format: OFormat[ReviewDetails] = Json.format[ReviewDetails]
 }

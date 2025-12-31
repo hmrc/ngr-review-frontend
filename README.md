@@ -35,6 +35,29 @@ Note: Using VOA_MODERNISED_API_STUB is automatically used for local and shares t
 ```
 sbt clean coverage test coverageReport
 ```
+
+### Formatting code
+
+- This project uses [Scalafmt](https://scalameta.org/scalafmt/). Rules are in `.scalafmt.conf`.
+- Format all files:
+```
+sbt scalafmtAll
+```
+
+- Check formatting:
+
+```
+sbt scalafmtCheckAll scalafmtSbtCheck
+```
+- To upgrade Scalafmt, update the plugin version in `project/plugins.sbt` and `.scalafmt.conf`.
+
+### Final checks before pushing changes
+
+- Run unit tests, integration tests, formatting, and coverage checks:
+
+```
+./build.sh
+```
 ### Further documentation
 
 shuttering:

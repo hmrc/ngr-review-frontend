@@ -33,16 +33,16 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SessionRepository @Inject()(
-                                   mongoComponent: MongoComponent,
-                                   appConfig: FrontendAppConfig,
-                                   clock: Clock
-                                 )(implicit ec: ExecutionContext)
-  extends PlayMongoRepository[UserAnswers](
+class SessionRepository @Inject() (
+  mongoComponent: MongoComponent,
+  appConfig: FrontendAppConfig,
+  clock: Clock
+)(implicit ec: ExecutionContext
+) extends PlayMongoRepository[UserAnswers](
     collectionName = "user-answers",
     mongoComponent = mongoComponent,
-    domainFormat   = UserAnswers.format,
-    indexes        = Seq(
+    domainFormat = UserAnswers.format,
+    indexes = Seq(
       IndexModel(
         Indexes.ascending("lastUpdated"),
         IndexOptions()
@@ -60,7 +60,7 @@ class SessionRepository @Inject()(
     collection
       .updateOne(
         filter = byId(id),
-        update = Updates.set("lastUpdated", Instant.now(clock)),
+        update = Updates.set("lastUpdated", Instant.now(clock))
       )
       .toFuture()
       .map(_ => true)
@@ -81,9 +81,9 @@ class SessionRepository @Inject()(
 
     collection
       .replaceOne(
-        filter      = byId(updatedAnswers.id),
+        filter = byId(updatedAnswers.id),
         replacement = updatedAnswers,
-        options     = ReplaceOptions().upsert(true)
+        options = ReplaceOptions().upsert(true)
       )
       .toFuture()
       .map(_ => true)

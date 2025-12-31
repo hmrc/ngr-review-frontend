@@ -19,12 +19,12 @@ package models.auth
 import org.scalatest.freespec.AnyFreeSpec
 
 class IdentifierSpec extends AnyFreeSpec {
-  
+
   "Identifier" - {
     "must serialize and deserialize to/from JSON" in {
       val identifier = Identifier("ID1", "Value1")
 
-      val json = Identifier.format.writes(identifier)
+      val json                   = Identifier.format.writes(identifier)
       val deserializedIdentifier = Identifier.format.reads(json).get
 
       assert(deserializedIdentifier == identifier)

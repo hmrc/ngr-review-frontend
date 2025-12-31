@@ -20,34 +20,35 @@ import config.AppConfig
 import play.api.mvc.Call
 
 case class NavButton(
-                      fieldName: String,
-                      call: Call,
-                      messageKey: String,
-                      linkId: String,
-                      notification: Option[Int],
-                      selected: Boolean,
-                    )
+  fieldName: String,
+  call: Call,
+  messageKey: String,
+  linkId: String,
+  notification: Option[Int],
+  selected: Boolean
+)
 
 case class NavBarCurrentPage(
-                              homePage: Boolean = false,
-                              messagesPage: Boolean = false,
-                              profileAndSettingsPage: Boolean = false,
-                              signOutPage: Boolean = false,
-                            )
+  homePage: Boolean = false,
+  messagesPage: Boolean = false,
+  profileAndSettingsPage: Boolean = false,
+  signOutPage: Boolean = false
+)
 
 case class NavBarContents(
-                           homePage: Option[Boolean] = None,
-                           messagesPage: Option[Boolean] = None,
-                           profileAndSettingsPage: Option[Boolean] = None,
-                           signOutPage: Option[Boolean] = None
-                         )
+  homePage: Option[Boolean] = None,
+  messagesPage: Option[Boolean] = None,
+  profileAndSettingsPage: Option[Boolean] = None,
+  signOutPage: Option[Boolean] = None
+)
 
 case class NavigationBarContent(
-                                 accountHome: Option[NavButton],
-                                 navigationButtons: Option[Seq[NavButton]]
-                               )
+  accountHome: Option[NavButton],
+  navigationButtons: Option[Seq[NavButton]]
+)
 
 object NavBarPageContents {
+
   private val navBarContents: NavBarContents = NavBarContents(
     homePage = Some(true),
     messagesPage = Some(false),
@@ -61,15 +62,44 @@ object NavBarPageContents {
     notifications = Some(1)
   )
 
-  def CreateNavBar(contents: NavBarContents, currentPage: NavBarCurrentPage, notifications: Option[Int] = None)(implicit appConfig: AppConfig): NavigationBarContent = {
+  def CreateNavBar(contents: NavBarContents, currentPage: NavBarCurrentPage, notifications: Option[Int] = None)(implicit appConfig: AppConfig)
+    : NavigationBarContent = {
 
     val dashboardHomeUrl = appConfig.dashboardUrl
 
     // Define buttons
-    val homePageButton     = NavButton(fieldName = "HomePage", call = Call("GET", dashboardHomeUrl), messageKey = "nav.home", linkId = "Home", selected = currentPage.homePage, notification = None)
-    val messagesPageButton = NavButton(fieldName = "MessagesPage", call = Call("GET", "/messages"), messageKey = "nav.messages", linkId = "Messages", selected = currentPage.messagesPage, notification = notifications)
-    val profilePageButton  = NavButton(fieldName = "ProfileAndSettingsPage", call = Call("GET", ""), messageKey = "nav.profileAndSettings", linkId = "Profile", selected = currentPage.profileAndSettingsPage, notification = None)
-    val signOutPageButton  = NavButton(fieldName = "SignOutPage", call = Call("GET", appConfig.ngrLogoutUrl), messageKey = "nav.signOut", linkId = "SignOut", selected = currentPage.signOutPage, notification = None)
+    val homePageButton     = NavButton(
+      fieldName = "HomePage",
+      call = Call("GET", dashboardHomeUrl),
+      messageKey = "nav.home",
+      linkId = "Home",
+      selected = currentPage.homePage,
+      notification = None
+    )
+    val messagesPageButton = NavButton(
+      fieldName = "MessagesPage",
+      call = Call("GET", "/messages"),
+      messageKey = "nav.messages",
+      linkId = "Messages",
+      selected = currentPage.messagesPage,
+      notification = notifications
+    )
+    val profilePageButton  = NavButton(
+      fieldName = "ProfileAndSettingsPage",
+      call = Call("GET", ""),
+      messageKey = "nav.profileAndSettings",
+      linkId = "Profile",
+      selected = currentPage.profileAndSettingsPage,
+      notification = None
+    )
+    val signOutPageButton  = NavButton(
+      fieldName = "SignOutPage",
+      call = Call("GET", appConfig.ngrLogoutUrl),
+      messageKey = "nav.signOut",
+      linkId = "SignOut",
+      selected = currentPage.signOutPage,
+      notification = None
+    )
 
     // Map fields to their NavButton equivalents
     val buttonMapping = Seq(
@@ -86,7 +116,7 @@ object NavBarPageContents {
 
     // Ensure HomePage is always first if it exists
     val (homePageButtons, otherButtons) = filteredButtons.partition(_.fieldName == "HomePage")
-    val sortedButtons = homePageButtons ++ otherButtons
+    val sortedButtons                   = homePageButtons ++ otherButtons
 
     // Create the NavigationBarContent
     NavigationBarContent(

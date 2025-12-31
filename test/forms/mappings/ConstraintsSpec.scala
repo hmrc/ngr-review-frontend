@@ -26,8 +26,7 @@ import play.api.data.validation.{Invalid, Valid}
 
 import java.time.LocalDate
 
-class ConstraintsSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with Generators  with Constraints {
-
+class ConstraintsSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with Generators with Constraints {
 
   "firstError" - {
 
@@ -189,7 +188,6 @@ class ConstraintsSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyC
       }
     }
   }
-
 
   "minimumCurrency" - {
 

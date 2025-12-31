@@ -24,7 +24,7 @@ class RegistrationSerialisationSpec extends PlaySpec {
   "CredId JSON format" should {
     "serialize and deserialize correctly" in {
       val model = CredId("cred-123")
-      val json = Json.toJson(model)
+      val json  = Json.toJson(model)
       json.as[CredId] mustEqual model
     }
   }
@@ -32,7 +32,7 @@ class RegistrationSerialisationSpec extends PlaySpec {
   "Email JSON format" should {
     "serialize and deserialize correctly" in {
       val model = Email("test@email.com")
-      val json = Json.toJson(model)
+      val json  = Json.toJson(model)
       json.as[Email] mustEqual model
     }
   }
@@ -40,7 +40,7 @@ class RegistrationSerialisationSpec extends PlaySpec {
   "Name JSON format" should {
     "serialize and deserialize correctly" in {
       val model = Name("Test Name")
-      val json = Json.toJson(model)
+      val json  = Json.toJson(model)
       json.as[Name] mustEqual model
     }
   }
@@ -48,7 +48,7 @@ class RegistrationSerialisationSpec extends PlaySpec {
   "TradingName JSON format" should {
     "serialize and deserialize correctly" in {
       val model = TradingName("Trading Name")
-      val json = Json.toJson(model)
+      val json  = Json.toJson(model)
       json.as[TradingName] mustEqual model
     }
   }
@@ -56,7 +56,7 @@ class RegistrationSerialisationSpec extends PlaySpec {
   "PhoneNumber JSON format" should {
     "serialize and deserialize correctly" in {
       val model = PhoneNumber("0123456789")
-      val json = Json.toJson(model)
+      val json  = Json.toJson(model)
       json.as[PhoneNumber] mustEqual model
     }
   }
@@ -64,7 +64,7 @@ class RegistrationSerialisationSpec extends PlaySpec {
   "Postcode JSON format" should {
     "serialize and deserialize correctly" in {
       val model = Postcode("AB12 3CD")
-      val json = Json.toJson(model)
+      val json  = Json.toJson(model)
       json.as[Postcode] mustEqual model
     }
   }
@@ -72,7 +72,7 @@ class RegistrationSerialisationSpec extends PlaySpec {
   "Nino JSON format" should {
     "serialize and deserialize correctly" in {
       val model = Nino("AA123456A")
-      val json = Json.toJson(model)
+      val json  = Json.toJson(model)
       json.as[Nino] mustEqual model
     }
   }
@@ -80,7 +80,7 @@ class RegistrationSerialisationSpec extends PlaySpec {
   "TRNReferenceNumber JSON format" should {
     "serialize and deserialize correctly" in {
       val model = TRNReferenceNumber(ReferenceType.TRN, "TRN-123")
-      val json = Json.toJson(model)
+      val json  = Json.toJson(model)
       json.as[TRNReferenceNumber] mustEqual model
     }
   }
@@ -94,9 +94,8 @@ class RegistrationSerialisationSpec extends PlaySpec {
         county = Some("Testshire"),
         postcode = Postcode("TE5 7ST")
       )
-      val json = Json.toJson(model)
+      val json  = Json.toJson(model)
       json.as[Address] mustEqual model
     }
   }
 }
-

@@ -20,11 +20,11 @@ import enumeratum.*
 
 sealed trait UserType extends EnumEntry
 
-object UserType extends Enum[UserType] with PlayJsonEnum[UserType]  {
+object UserType extends Enum[UserType] with PlayJsonEnum[UserType] {
 
   val values: IndexedSeq[UserType] = findValues
 
-  case object Individual  extends UserType
+  case object Individual extends UserType
   case object Organisation extends UserType
 
 }

@@ -35,13 +35,7 @@ import repositories.SessionRepository
 
 import scala.concurrent.ExecutionContext
 
-trait SpecBase
-  extends AnyFreeSpec
-    with Matchers
-    with TryValues
-    with OptionValues
-    with ScalaFutures
-    with IntegrationPatience {
+trait SpecBase extends AnyFreeSpec with Matchers with TryValues with OptionValues with ScalaFutures with IntegrationPatience {
 
   val fakeAuth = new FakeIdentifierAction(stubMessagesControllerComponents().parsers)
 
@@ -56,12 +50,12 @@ trait SpecBase
   def messages(app: Application): Messages =
     app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
 
-  implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
+  implicit val ec: ExecutionContext            = scala.concurrent.ExecutionContext.Implicits.global
   val mockSessionRepository: SessionRepository = mock[SessionRepository]
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  protected def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder = {
+  protected def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder =
 
     new GuiceApplicationBuilder()
       .overrides(
@@ -72,5 +66,4 @@ trait SpecBase
         bind[SessionRepository].toInstance(mockSessionRepository)
       )
 
-  }
 }

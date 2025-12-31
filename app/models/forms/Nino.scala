@@ -20,6 +20,6 @@ import play.api.libs.json.{Format, Json}
 
 final case class Nino(nino: String)
 
-object Nino  {
+object Nino {
   implicit val format: Format[Nino] = Json.format[Nino]
 }

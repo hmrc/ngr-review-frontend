@@ -39,11 +39,10 @@ import uk.gov.hmrc.http.HeaderCarrier
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-
 class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
 
   class Harness(authAction: IdentifierAction) {
-    def onPageLoad(): Action[AnyContent] = authAction { _ => Results.Ok }
+    def onPageLoad(): Action[AnyContent] = authAction(_ => Results.Ok)
   }
 
   override def beforeEach(): Unit = {
@@ -52,8 +51,8 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
   }
 
   val testBodyParser: BodyParsers.Default = mock[BodyParsers.Default]
-  val mockNGRConnector: NGRConnector = mock[NGRConnector]
-  val mockAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
+  val mockNGRConnector: NGRConnector      = mock[NGRConnector]
+  val mockAppConfig: FrontendAppConfig    = mock[FrontendAppConfig]
 
   "Auth Action" - {
 
@@ -65,24 +64,26 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
         val application = applicationBuilder(userAnswers = None)
           .overrides(
             bind[NGRConnector].toInstance(mockNGRConnector),
-            bind[BodyParsers.Default].toInstance(testBodyParser))
+            bind[BodyParsers.Default].toInstance(testBodyParser)
+          )
           .build()
 
-        val registeredRatepayer: RatepayerRegistrationValuation = RatepayerRegistrationValuation(CredId("1234"), Some(RatepayerRegistration(isRegistered = Some(true))))
+        val registeredRatepayer: RatepayerRegistrationValuation =
+          RatepayerRegistrationValuation(CredId("1234"), Some(RatepayerRegistration(isRegistered = Some(true))))
 
         when(mockNGRConnector.getRatepayer(any())(any())).thenReturn(Future.successful(Some(registeredRatepayer)))
 
         running(application) {
           val mockAuthConnector: AuthConnector = mock[AuthConnector]
-          val retrieval: AuthRetrievals = Some(Credentials("id", "provider")) ~ Some("id") ~ ConfidenceLevel.L250
+          val retrieval: AuthRetrievals        = Some(Credentials("id", "provider")) ~ Some("id") ~ ConfidenceLevel.L250
 
           when(mockAuthConnector.authorise[AuthRetrievals](any(), any())(any(), any())).thenReturn(Future.successful(
             retrieval
           ))
 
-          val action = new AuthenticatedIdentifierAction(mockAuthConnector, mockNGRConnector, mockAppConfig, testBodyParser)
+          val action     = new AuthenticatedIdentifierAction(mockAuthConnector, mockNGRConnector, mockAppConfig, testBodyParser)
           val controller = new Harness(action)
-          val result = controller.onPageLoad()(FakeRequest("", ""))
+          val result     = controller.onPageLoad()(FakeRequest("", ""))
           status(result) mustBe OK
         }
       }
@@ -90,12 +91,13 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
       "must redirect to registration login service" in {
         type AuthRetrievals = Option[Credentials] ~ Option[String] ~ ConfidenceLevel
         lazy val testBodyParser: BodyParsers.Default = mock[BodyParsers.Default]
-        val mockNGRConnector: NGRConnector = mock[NGRConnector]
+        val mockNGRConnector: NGRConnector           = mock[NGRConnector]
 
         val application = applicationBuilder(userAnswers = None)
           .overrides(
             bind[NGRConnector].toInstance(mockNGRConnector),
-            bind[BodyParsers.Default].toInstance(testBodyParser))
+            bind[BodyParsers.Default].toInstance(testBodyParser)
+          )
           .build()
 
         val emptyRatepayer: RatepayerRegistrationValuation = RatepayerRegistrationValuation(CredId("1234"), None)
@@ -103,18 +105,18 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
         when(mockNGRConnector.getRatepayer(any())(any())).thenReturn(Future.successful(Some(emptyRatepayer)))
 
         running(application) {
-          val frontendAppConfig = application.injector.instanceOf[FrontendAppConfig]
+          val frontendAppConfig                = application.injector.instanceOf[FrontendAppConfig]
           val mockAuthConnector: AuthConnector = mock[AuthConnector]
-          val retrieval: AuthRetrievals = Some(Credentials("id", "provider")) ~ Some("id") ~ ConfidenceLevel.L500
+          val retrieval: AuthRetrievals        = Some(Credentials("id", "provider")) ~ Some("id") ~ ConfidenceLevel.L500
 
           when(mockAuthConnector.authorise[AuthRetrievals](any(), any())(any(), any())).thenReturn(Future.successful(
             retrieval
           ))
 
-          val action = new AuthenticatedIdentifierAction(mockAuthConnector, mockNGRConnector, frontendAppConfig, testBodyParser)
+          val action     = new AuthenticatedIdentifierAction(mockAuthConnector, mockNGRConnector, frontendAppConfig, testBodyParser)
           val controller = new Harness(action)
-          val result = controller.onPageLoad()(FakeRequest("", ""))
-          status(result) mustBe SEE_OTHER
+          val result     = controller.onPageLoad()(FakeRequest("", ""))
+          status(result)           mustBe SEE_OTHER
           redirectLocation(result) mustBe Some("http://localhost:1502/ngr-login-register-frontend/register")
         }
       }
@@ -126,15 +128,15 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
         val application = applicationBuilder(userAnswers = None).build()
 
         running(application) {
-          val testBodyParser = application.injector.instanceOf[BodyParsers.Default]
+          val testBodyParser                   = application.injector.instanceOf[BodyParsers.Default]
           val mockAuthConnector: AuthConnector = mock[AuthConnector]
-          val retrieval: AuthRetrievals = Some(Credentials("id", "provider")) ~ None ~ ConfidenceLevel.L50
+          val retrieval: AuthRetrievals        = Some(Credentials("id", "provider")) ~ None ~ ConfidenceLevel.L50
 
           when(mockAuthConnector.authorise[AuthRetrievals](any(), any())(any(), any())).thenReturn(Future.successful(
             retrieval
           ))
 
-          val action = new AuthenticatedIdentifierAction(mockAuthConnector, mockNGRConnector, mockAppConfig, testBodyParser)
+          val action     = new AuthenticatedIdentifierAction(mockAuthConnector, mockNGRConnector, mockAppConfig, testBodyParser)
           val controller = new Harness(action)
 
           val results = intercept[Exception] {
@@ -157,9 +159,9 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
 
           val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new MissingBearerToken), mockNGRConnector, appConfig, bodyParsers)
           val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+          val result     = controller.onPageLoad()(FakeRequest())
 
-          status(result) mustBe SEE_OTHER
+          status(result)               mustBe SEE_OTHER
           redirectLocation(result).value must startWith(appConfig.dashboardUrl)
         }
       }
@@ -177,9 +179,9 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
 
           val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new BearerTokenExpired), mockNGRConnector, appConfig, bodyParsers)
           val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+          val result     = controller.onPageLoad()(FakeRequest())
 
-          status(result) mustBe SEE_OTHER
+          status(result)               mustBe SEE_OTHER
           redirectLocation(result).value must startWith(appConfig.dashboardUrl)
         }
       }
@@ -197,9 +199,9 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
 
           val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new InsufficientEnrolments), mockNGRConnector, appConfig, bodyParsers)
           val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+          val result     = controller.onPageLoad()(FakeRequest())
 
-          status(result) mustBe SEE_OTHER
+          status(result)                 mustBe SEE_OTHER
           redirectLocation(result).value mustBe routes.UnauthorisedController.onPageLoad().url
         }
       }
@@ -215,11 +217,12 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
           val appConfig   = application.injector.instanceOf[FrontendAppConfig]
 
-          val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new InsufficientConfidenceLevel), mockNGRConnector, appConfig, bodyParsers)
+          val authAction =
+            new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new InsufficientConfidenceLevel), mockNGRConnector, appConfig, bodyParsers)
           val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+          val result     = controller.onPageLoad()(FakeRequest())
 
-          status(result) mustBe SEE_OTHER
+          status(result)                 mustBe SEE_OTHER
           redirectLocation(result).value mustBe routes.UnauthorisedController.onPageLoad().url
         }
       }
@@ -237,9 +240,9 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
 
           val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new UnsupportedAuthProvider), mockNGRConnector, appConfig, bodyParsers)
           val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+          val result     = controller.onPageLoad()(FakeRequest())
 
-          status(result) mustBe SEE_OTHER
+          status(result)                 mustBe SEE_OTHER
           redirectLocation(result).value mustBe routes.UnauthorisedController.onPageLoad().url
         }
       }
@@ -255,11 +258,12 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
           val appConfig   = application.injector.instanceOf[FrontendAppConfig]
 
-          val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new UnsupportedAffinityGroup), mockNGRConnector, appConfig, bodyParsers)
+          val authAction =
+            new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new UnsupportedAffinityGroup), mockNGRConnector, appConfig, bodyParsers)
           val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+          val result     = controller.onPageLoad()(FakeRequest())
 
-          status(result) mustBe SEE_OTHER
+          status(result)           mustBe SEE_OTHER
           redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
         }
       }
@@ -275,11 +279,12 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
           val appConfig   = application.injector.instanceOf[FrontendAppConfig]
 
-          val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new UnsupportedCredentialRole), mockNGRConnector, appConfig, bodyParsers)
+          val authAction =
+            new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new UnsupportedCredentialRole), mockNGRConnector, appConfig, bodyParsers)
           val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+          val result     = controller.onPageLoad()(FakeRequest())
 
-          status(result) mustBe SEE_OTHER
+          status(result)           mustBe SEE_OTHER
           redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
         }
       }
@@ -287,7 +292,7 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
   }
 }
 
-class FakeFailingAuthConnector @Inject()(exceptionToReturn: Throwable) extends AuthConnector {
+class FakeFailingAuthConnector @Inject() (exceptionToReturn: Throwable) extends AuthConnector {
   val serviceUrl: String = ""
 
   override def authorise[A](predicate: Predicate, retrieval: Retrieval[A])(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[A] =

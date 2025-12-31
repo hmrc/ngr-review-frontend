@@ -22,6 +22,6 @@ final case class Postcode(value: String) {
   override def toString: String = value
 }
 
-  object Postcode {
-    implicit val format: OFormat[Postcode] = Json.format[Postcode]
-  }
+object Postcode {
+  implicit val format: OFormat[Postcode] = Json.format[Postcode]
+}
