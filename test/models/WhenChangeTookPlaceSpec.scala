@@ -34,7 +34,6 @@ class WhenChangeTookPlaceSpec extends AnyFreeSpec with Matchers with ScalaCheckP
 
       forAll(gen) {
         whenChangeTookPlace =>
-
           JsString(whenChangeTookPlace.toString).validate[WhenChangeTookPlace].asOpt.value mustEqual whenChangeTookPlace
       }
     }
@@ -45,7 +44,6 @@ class WhenChangeTookPlaceSpec extends AnyFreeSpec with Matchers with ScalaCheckP
 
       forAll(gen) {
         invalidValue =>
-
           JsString(invalidValue).validate[WhenChangeTookPlace] mustEqual JsError("error.invalid")
       }
     }
@@ -56,7 +54,6 @@ class WhenChangeTookPlaceSpec extends AnyFreeSpec with Matchers with ScalaCheckP
 
       forAll(gen) {
         whenChangeTookPlace =>
-
           Json.toJson(whenChangeTookPlace) mustEqual JsString(whenChangeTookPlace.toString)
       }
     }

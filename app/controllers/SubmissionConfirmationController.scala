@@ -29,13 +29,16 @@ import views.html.SubmissionConfirmationView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class SubmissionConfirmationController @Inject()(
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: SubmissionConfirmationView,
-                                       sessionRepository: SessionRepository
-                                     )(implicit appConfig: AppConfig, ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class SubmissionConfirmationController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  val controllerComponents: MessagesControllerComponents,
+  view: SubmissionConfirmationView,
+  sessionRepository: SessionRepository
+)(implicit appConfig: AppConfig,
+  ec: ExecutionContext
+) extends FrontendBaseController
+  with I18nSupport {
 
   def onPageLoad(propertyReference: String): Action[AnyContent] = (identify andThen getData).async {
     implicit request =>

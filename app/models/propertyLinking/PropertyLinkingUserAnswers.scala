@@ -19,17 +19,18 @@ package models.propertyLinking
 import models.registration.CredId
 import play.api.libs.json.{Format, Json}
 
-case class PropertyLinkingUserAnswers (credId: CredId,
-                                       vmvProperty: VMVProperty,
-                                       currentRatepayer: Option[CurrentRatepayer] = None,
-                                       businessRatesBill: Option[String] = None,
-                                       connectionToProperty: Option[String] = None,
-                                       requestSentReference: Option[String] = None,
-                                       evidenceDocument: Option[String] = None
-                                      )
+case class PropertyLinkingUserAnswers(
+  credId: CredId,
+  vmvProperty: VMVProperty,
+  currentRatepayer: Option[CurrentRatepayer] = None,
+  businessRatesBill: Option[String] = None,
+  connectionToProperty: Option[String] = None,
+  requestSentReference: Option[String] = None,
+  evidenceDocument: Option[String] = None
+)
 
 object PropertyLinkingUserAnswers {
-  
-  implicit val format:Format[PropertyLinkingUserAnswers] = Json.format[PropertyLinkingUserAnswers]
-  
+
+  implicit val format: Format[PropertyLinkingUserAnswers] = Json.format[PropertyLinkingUserAnswers]
+
 }

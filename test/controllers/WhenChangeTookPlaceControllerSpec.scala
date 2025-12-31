@@ -27,8 +27,9 @@ import views.html.WhenChangeTookPlaceView
 import scala.concurrent.Future
 
 class WhenChangeTookPlaceControllerSpec extends ControllerSpecSupport {
-  lazy val view: WhenChangeTookPlaceView = inject[WhenChangeTookPlaceView]
+  lazy val view: WhenChangeTookPlaceView                 = inject[WhenChangeTookPlaceView]
   lazy val formProvider: WhenChangeTookPlaceFormProvider = WhenChangeTookPlaceFormProvider()
+
   private val controller: WhenChangeTookPlaceController = new WhenChangeTookPlaceController(
     sessionRepository = mockSessionRepository,
     navigator = navigator,
@@ -48,19 +49,19 @@ class WhenChangeTookPlaceControllerSpec extends ControllerSpecSupport {
       "return HTML" in {
         val result = controller.onPageLoad(NormalMode)(authenticatedFakeRequest)
         contentType(result) mustBe Some("text/html")
-        charset(result) mustBe Some("utf-8")
+        charset(result)     mustBe Some("utf-8")
       }
     }
-    "onSubmit" must {
+    "onSubmit"   must {
       "redirect with valid form" in {
         when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
         val formRequest = requestWithForm(Map("value" -> "false"))
-        val result = controller.onSubmit(NormalMode)(formRequest)
+        val result      = controller.onSubmit(NormalMode)(formRequest)
         status(result) mustBe 303
       }
       "bad request if no date and yes selected" in {
         val formRequest = requestWithForm(Map("value" -> "true"))
-        val result = controller.onSubmit(NormalMode)(formRequest)
+        val result      = controller.onSubmit(NormalMode)(formRequest)
         status(result) mustBe 400
       }
       "bad request with invalid form" in {

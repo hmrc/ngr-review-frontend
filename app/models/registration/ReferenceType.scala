@@ -20,11 +20,11 @@ import enumeratum.*
 
 sealed trait ReferenceType extends EnumEntry
 
-object ReferenceType extends Enum[ReferenceType] with PlayJsonEnum[ReferenceType]  {
+object ReferenceType extends Enum[ReferenceType] with PlayJsonEnum[ReferenceType] {
 
   val values: IndexedSeq[ReferenceType] = findValues
 
-  case object TRN  extends ReferenceType
+  case object TRN extends ReferenceType
   case object NINO extends ReferenceType
-  case object SAUTR  extends ReferenceType
+  case object SAUTR extends ReferenceType
 }

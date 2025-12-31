@@ -30,17 +30,21 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ReviewYourPropertyDetailsController @Inject()(view: ReviewYourPropertyDetailsView,
-                                                    identifierAction: IdentifierAction,
-                                                    ngrConnector: NGRConnector,
-                                                    mcc: MessagesControllerComponents)(implicit ec: ExecutionContext, appConfig: AppConfig)
-  extends FrontendController(mcc) with I18nSupport {
+class ReviewYourPropertyDetailsController @Inject() (
+  view: ReviewYourPropertyDetailsView,
+  identifierAction: IdentifierAction,
+  ngrConnector: NGRConnector,
+  mcc: MessagesControllerComponents
+)(implicit ec: ExecutionContext,
+  appConfig: AppConfig
+) extends FrontendController(mcc)
+  with I18nSupport {
 
   def show: Action[AnyContent] =
     identifierAction.async(implicit request =>
       ngrConnector.getLinkedProperty.flatMap {
         case Some(property) => Future.successful(Ok(view(createDefaultNavBar(), property.addressFull)))
-        case None => Future.failed(throw new NotFoundException("Unable to find match Linked Properties"))
+        case None           => Future.failed(throw new NotFoundException("Unable to find match Linked Properties"))
       }
     )
 }

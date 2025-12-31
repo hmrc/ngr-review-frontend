@@ -47,7 +47,7 @@ class VMVPropertySpec extends PlaySpec {
         localAuthorityReference = "LAREF1",
         valuations = List(valuation)
       )
-      val json = Json.toJson(model)
+      val json  = Json.toJson(model)
       json.as[VMVProperty] mustEqual model
     }
 
@@ -90,4 +90,3 @@ class VMVPropertySpec extends PlaySpec {
     }
   }
 }
-

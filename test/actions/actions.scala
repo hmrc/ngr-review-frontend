@@ -19,7 +19,7 @@ import uk.gov.hmrc.auth.core.retrieve.~
 package object actions {
 
   implicit class HelperOps[A](a: A) {
-    def ~[B](b: B) = new~(a, b)
+    def ~[B](b: B) = new ~(a, b)
   }
 
 }

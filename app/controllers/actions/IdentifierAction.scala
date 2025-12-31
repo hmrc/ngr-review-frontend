@@ -34,18 +34,20 @@ import scala.concurrent.{ExecutionContext, Future}
 
 trait IdentifierAction extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest]
 
-class AuthenticatedIdentifierAction @Inject()(
-                                               override val authConnector: AuthConnector,
-                                               ngrConnector: NGRConnector,
-                                               config: FrontendAppConfig,
-                                               val parser: BodyParsers.Default
-                                             )
-                                             (implicit val executionContext: ExecutionContext) extends IdentifierAction with AuthorisedFunctions {
+class AuthenticatedIdentifierAction @Inject() (
+  override val authConnector: AuthConnector,
+  ngrConnector: NGRConnector,
+  config: FrontendAppConfig,
+  val parser: BodyParsers.Default
+)(implicit val executionContext: ExecutionContext
+) extends IdentifierAction
+  with AuthorisedFunctions {
 
   type RetrievalsType = Option[Credentials] ~ Option[String] ~ ConfidenceLevel
+
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
 
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+    implicit val hc: HeaderCarrier            = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
     val retrievals: Retrieval[RetrievalsType] =
       Retrievals.credentials and
         Retrievals.internalId and
@@ -55,27 +57,25 @@ class AuthenticatedIdentifierAction @Inject()(
 
       case Some(credentials) ~ Some(internalId) ~ confidenceLevel =>
         isRegistered(credentials.providerId).flatMap {
-          case true => block(IdentifierRequest(request = request, userId = internalId, credId = credentials.providerId))
+          case true  => block(IdentifierRequest(request = request, userId = internalId, credId = credentials.providerId))
           case false => redirectToRegister()
         }
-      case _ ~ _ ~ confidenceLevel =>
+      case _ ~ _ ~ confidenceLevel                                =>
         throw new Exception("confidenceLevel not met expected L250 but was " + confidenceLevel)
 
     } recover {
-      case _: NoActiveSession =>
+      case _: NoActiveSession        =>
         Redirect(config.dashboardUrl)
       case _: AuthorisationException =>
         Redirect(routes.UnauthorisedController.onPageLoad())
     }
   }
 
-  private def isRegistered(credId: String)(implicit hc: HeaderCarrier): Future[Boolean] = {
+  private def isRegistered(credId: String)(implicit hc: HeaderCarrier): Future[Boolean] =
     ngrConnector.getRatepayer(CredId(credId)).flatMap { maybeRatepayer =>
       Future.successful(maybeRatepayer.flatMap(_.ratepayerRegistration).flatMap(_.isRegistered).getOrElse(false))
     }
-  }
 
-  private def redirectToRegister(): Future[Result] = {
+  private def redirectToRegister(): Future[Result] =
     Future.successful(Redirect(config.registrationUrl))
-  }
 }

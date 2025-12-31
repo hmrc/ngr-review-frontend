@@ -25,6 +25,7 @@ import java.time.LocalDate
 class PropertyLinkingUserAnswersSpec extends PlaySpec {
 
   val credId = CredId("test-cred-id")
+
   val valuation = Valuation(
     assessmentRef = 123456L,
     assessmentStatus = "Current",
@@ -39,7 +40,8 @@ class PropertyLinkingUserAnswersSpec extends PlaySpec {
     listType = "TypeA",
     propertyLinkEarliestStartDate = Some(LocalDate.parse("2024-04-01"))
   )
-  val vmvProperty = VMVProperty(
+
+  val vmvProperty      = VMVProperty(
     uarn = 987654321L,
     addressFull = "123 Test Street, Testville",
     localAuthorityCode = "123",
@@ -59,7 +61,7 @@ class PropertyLinkingUserAnswersSpec extends PlaySpec {
         requestSentReference = Some("ref-123"),
         evidenceDocument = Some("evidence.pdf")
       )
-      val json = Json.toJson(model)
+      val json  = Json.toJson(model)
       json.as[PropertyLinkingUserAnswers] mustEqual model
     }
 
@@ -68,7 +70,7 @@ class PropertyLinkingUserAnswersSpec extends PlaySpec {
         credId = credId,
         vmvProperty = vmvProperty
       )
-      val json = Json.toJson(model)
+      val json  = Json.toJson(model)
       json.as[PropertyLinkingUserAnswers] mustEqual model
     }
 

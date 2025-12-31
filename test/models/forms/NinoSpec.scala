@@ -21,20 +21,20 @@ import org.scalatest.matchers.must.Matchers.mustBe
 import play.api.libs.json.Json
 
 class NinoSpec extends AnyFreeSpec {
- 
-    "Nino JSON format" - {
 
-      "serialize Nino to JSON" in {
-        val nino = Nino("AA123456A")
-        val json = Json.toJson(nino)
-        json.toString() mustBe """{"nino":"AA123456A"}"""
-      }
+  "Nino JSON format" - {
 
-      "deserialize JSON to Nino" in {
-        val json = Json.parse("""{"nino":"AA123456A"}""")
-        val nino = json.as[Nino]
-        nino mustBe Nino("AA123456A")
-      }
+    "serialize Nino to JSON" in {
+      val nino = Nino("AA123456A")
+      val json = Json.toJson(nino)
+      json.toString() mustBe """{"nino":"AA123456A"}"""
     }
+
+    "deserialize JSON to Nino" in {
+      val json = Json.parse("""{"nino":"AA123456A"}""")
+      val nino = json.as[Nino]
+      nino mustBe Nino("AA123456A")
+    }
+  }
 
 }

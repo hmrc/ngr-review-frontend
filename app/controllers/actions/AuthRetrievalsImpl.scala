@@ -28,10 +28,11 @@ import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class AuthRetrievalsImpl @Inject()(
-                                    val authConnector: AuthConnector,
-                                    mcc: MessagesControllerComponents,
-                                  )(implicit ec: ExecutionContext) extends AuthRetrievals
+class AuthRetrievalsImpl @Inject() (
+  val authConnector: AuthConnector,
+  mcc: MessagesControllerComponents
+)(implicit ec: ExecutionContext
+) extends AuthRetrievals
   with AuthorisedFunctions {
 
   type RetrievalsType = Option[Credentials] ~ Option[String] ~ ConfidenceLevel ~ Option[String] ~ Option[AffinityGroup]
@@ -46,27 +47,27 @@ class AuthRetrievalsImpl @Inject()(
         Retrievals.email and
         Retrievals.affinityGroup
 
-    authorised(ConfidenceLevel.L250).retrieve(retrievals){
+    authorised(ConfidenceLevel.L250).retrieve(retrievals) {
       case credentials ~ Some(nino) ~ confidenceLevel ~ email ~ affinityGroup =>
         block(
           AuthenticatedUserRequest(
             request = request,
             confidenceLevel = Some(confidenceLevel),
             authProvider = credentials.map(_.providerType),
-            nino = Nino(hasNino = true,Some(nino)),
+            nino = Nino(hasNino = true, Some(nino)),
             email = email.filter(_.nonEmpty),
             credId = credentials.map(_.providerId),
             affinityGroup = affinityGroup
           )
         )
-      case _ ~ _ ~ confidenceLevel ~ _ => throw new Exception("confidenceLevel not met")
-    }recoverWith {
+      case _ ~ _ ~ confidenceLevel ~ _                                        => throw new Exception("confidenceLevel not met")
+    } recoverWith {
       case ex: Throwable =>
         throw ex
     }
   }
   // $COVERAGE-OFF$
-  override def parser: BodyParser[AnyContent] = mcc.parsers.defaultBodyParser
+  override def parser: BodyParser[AnyContent]                                                                            = mcc.parsers.defaultBodyParser
 
   override protected def executionContext: ExecutionContext = ec
   // $COVERAGE-ON$

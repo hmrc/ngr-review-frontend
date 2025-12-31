@@ -30,15 +30,16 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class NGRConnector @Inject()(http: HttpClientV2,
-                             appConfig: AppConfig,
-                            )
-                            (implicit ec: ExecutionContext) {
+class NGRConnector @Inject() (
+  http: HttpClientV2,
+  appConfig: AppConfig
+)(implicit ec: ExecutionContext
+) {
   private def url(path: String): URL = url"${appConfig.nextGenerationRatesUrl}/next-generation-rates/$path"
 
   def getRatepayer(credId: CredId)(implicit hc: HeaderCarrier): Future[Option[RatepayerRegistrationValuation]] = {
     implicit val rds: HttpReads[RatepayerRegistrationValuation] = readFromJson
-    val model: RatepayerRegistrationValuation = RatepayerRegistrationValuation(credId, None)
+    val model: RatepayerRegistrationValuation                   = RatepayerRegistrationValuation(credId, None)
     http.get(url("get-ratepayer"))
       .withBody(Json.toJson(model))
       .execute[Option[RatepayerRegistrationValuation]]
@@ -50,12 +51,11 @@ class NGRConnector @Inject()(http: HttpClientV2,
       .execute[Option[PropertyLinkingUserAnswers]]
   }
 
-  def getLinkedProperty(implicit hc: HeaderCarrier): Future[Option[VMVProperty]] = {
+  def getLinkedProperty(implicit hc: HeaderCarrier): Future[Option[VMVProperty]] =
     getPropertyLinkingUserAnswers
       .map {
         case Some(propertyLinkingUserAnswers) => Some(propertyLinkingUserAnswers.vmvProperty)
-        case None => throw new NotFoundException("failed to find propertyLinkingUserAnswers from backend mongo")
+        case None                             => throw new NotFoundException("failed to find propertyLinkingUserAnswers from backend mongo")
       }
-  }
 
 }

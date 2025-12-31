@@ -17,6 +17,8 @@
 package connectors
 
 import config.{AppConfig, FrontendAppConfig}
+import models.{AssessmentId, ReviewDetails}
+import models.propertyLinking.{PropertyLinkingUserAnswers, VMVProperty}
 import models.registration.{CredId, RatepayerRegistrationValuation}
 import models.{AssessmentId, ReviewChangesUserAnswers}
 import play.api.Logging
@@ -27,6 +29,7 @@ import play.mvc.Http.HeaderNames
 import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
 import uk.gov.hmrc.http.HttpReads.Implicits.*
 import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, NotFoundException, StringContextOps}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse, NotFoundException, StringContextOps}
 
 import java.net.URL
@@ -54,6 +57,10 @@ class NGRNotifyConnector @Inject()(http: HttpClientV2,
     } else {
       Future.successful(ACCEPTED)
     }
+  def getReviewDetails(assessmentId: AssessmentId)(implicit hc: HeaderCarrier): Future[Option[ReviewDetails]] = {
+    implicit val rds: HttpReads[ReviewDetails] = readFromJson
+    http.get(url("review-properties"))
+      .execute[Option[ReviewDetails]]
   }
 
 }

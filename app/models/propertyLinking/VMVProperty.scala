@@ -20,34 +20,35 @@ import play.api.libs.json.{Format, Json, OFormat}
 
 import java.time.LocalDate
 
-case class VMVProperty(uarn: Long,
-                       addressFull: String,
-                       localAuthorityCode: String,
-                       localAuthorityReference: String,
-                       valuations: List[Valuation]
-                      )
+case class VMVProperty(
+  uarn: Long,
+  addressFull: String,
+  localAuthorityCode: String,
+  localAuthorityReference: String,
+  valuations: List[Valuation]
+)
 
 object VMVProperty {
   implicit val format: OFormat[VMVProperty] = Json.format[VMVProperty]
 }
 
 case class Valuation(
-                      assessmentRef: Long,
-                      assessmentStatus: String,
-                      rateableValue: Option[BigDecimal],
-                      scatCode: Option[String],
-                      descriptionText: String,
-                      effectiveDate: LocalDate,
-                      currentFromDate: LocalDate,
-                      listYear: String,
-                      primaryDescription: String,
-                      allowedActions: List[String],
-                      listType: String,
-                      propertyLinkEarliestStartDate: Option[LocalDate]
-                    )
+  assessmentRef: Long,
+  assessmentStatus: String,
+  rateableValue: Option[BigDecimal],
+  scatCode: Option[String],
+  descriptionText: String,
+  effectiveDate: LocalDate,
+  currentFromDate: LocalDate,
+  listYear: String,
+  primaryDescription: String,
+  allowedActions: List[String],
+  listType: String,
+  propertyLinkEarliestStartDate: Option[LocalDate]
+)
 
 object Valuation {
 
-  implicit val format:Format[Valuation] = Json.format[Valuation]
+  implicit val format: Format[Valuation] = Json.format[Valuation]
 
 }

@@ -24,13 +24,13 @@ import uk.gov.hmrc.auth.core.Nino
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class FakeAuthRetrievals @Inject()(bodyParsers: PlayBodyParsers) extends AuthRetrievals {
+class FakeAuthRetrievals @Inject() (bodyParsers: PlayBodyParsers) extends AuthRetrievals {
 
-  override def invokeBlock[A](request: Request[A], block: AuthenticatedUserRequest[A] => Future[Result]): Future[Result] =  {
-    val authRequest = AuthenticatedUserRequest(request, None, None, Some("user@email.com"),  Some("1234"), None, nino = Nino(hasNino = true, Some("AA000003D")))
+  override def invokeBlock[A](request: Request[A], block: AuthenticatedUserRequest[A] => Future[Result]): Future[Result] = {
+    val authRequest = AuthenticatedUserRequest(request, None, None, Some("user@email.com"), Some("1234"), None, nino = Nino(hasNino = true, Some("AA000003D")))
     block(authRequest)
   }
-  override def parser: BodyParser[AnyContent] = bodyParsers.defaultBodyParser
+  override def parser: BodyParser[AnyContent]                                                                            = bodyParsers.defaultBodyParser
 
   override protected def executionContext: ExecutionContext =
     scala.concurrent.ExecutionContext.Implicits.global

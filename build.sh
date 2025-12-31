@@ -1,0 +1,1 @@
+sbt clean scalafmtAll scalafmtSbt scalafmtCheckAll compile coverage test it/test coverageReport

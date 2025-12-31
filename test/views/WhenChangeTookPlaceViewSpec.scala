@@ -23,29 +23,29 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.html.WhenChangeTookPlaceView
 
-class WhenChangeTookPlaceViewSpec extends ViewBaseSpec{
-  val view: WhenChangeTookPlaceView = inject[WhenChangeTookPlaceView]
-  val address = "123 street lane"
+class WhenChangeTookPlaceViewSpec extends ViewBaseSpec {
+  val view: WhenChangeTookPlaceView                 = inject[WhenChangeTookPlaceView]
+  val address                                       = "123 street lane"
   val formProvider: WhenChangeTookPlaceFormProvider = inject[WhenChangeTookPlaceFormProvider]
-  implicit val document: Document = Jsoup.parse(view(address = address, form = formProvider(), navigationBarContent = navBarContent(), mode = NormalMode).body)
+  implicit val document: Document                   = Jsoup.parse(view(address = address, form = formProvider(), navigationBarContent = navBarContent(), mode = NormalMode).body)
 
   object Selectors {
-    val address = "#main-content > div > div.govuk-grid-column-two-thirds > form > span"
-    val heading = "#main-content > div > div.govuk-grid-column-two-thirds > form > div > fieldset > legend > h1"
-    val yes = "#main-content > div > div.govuk-grid-column-two-thirds > form > div > fieldset > div > div:nth-child(1) > label"
-    val no = "#main-content > div > div.govuk-grid-column-two-thirds > form > div > fieldset > div > div:nth-child(3) > label"
+    val address   = "#main-content > div > div.govuk-grid-column-two-thirds > form > span"
+    val heading   = "#main-content > div > div.govuk-grid-column-two-thirds > form > div > fieldset > legend > h1"
+    val yes       = "#main-content > div > div.govuk-grid-column-two-thirds > form > div > fieldset > div > div:nth-child(1) > label"
+    val no        = "#main-content > div > div.govuk-grid-column-two-thirds > form > div > fieldset > div > div:nth-child(3) > label"
     val dateTitle = "#conditional-value > div > fieldset > legend"
-    val continue = "#continue"
+    val continue  = "#continue"
   }
 
   "WhenChangeTookPlaceView" must {
     "show correct text" in {
-      elementText(Selectors.address) mustBe address
-      elementText(Selectors.heading) mustBe "Do you know when this change took place?"
-      elementText(Selectors.yes) mustBe "Yes"
-      elementText(Selectors.no) mustBe "No"
+      elementText(Selectors.address)   mustBe address
+      elementText(Selectors.heading)   mustBe "Do you know when this change took place?"
+      elementText(Selectors.yes)       mustBe "Yes"
+      elementText(Selectors.no)        mustBe "No"
       elementText(Selectors.dateTitle) mustBe "When did this change take place?"
-      elementText(Selectors.continue) mustBe "Continue"
+      elementText(Selectors.continue)  mustBe "Continue"
     }
   }
 }

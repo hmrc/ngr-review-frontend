@@ -45,23 +45,23 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with TestData {
       "must set userAnswers to 'None' in the request" in {
 
         val sessionRepository = mock[SessionRepository]
-        val ngrConnector = mock[NGRConnector]
+        val ngrConnector      = mock[NGRConnector]
         when(sessionRepository.get(any)).thenReturn(Future(None))
         when(ngrConnector.getLinkedProperty(any)).thenReturn(Future(Some(property)))
-        val action = new Harness(sessionRepository, ngrConnector)
+        val action            = new Harness(sessionRepository, ngrConnector)
 
         val result = action.callTransform(IdentifierRequest(FakeRequest(), "id", "")).futureValue
 
         result.userAnswers must not be defined
       }
-      
+
       "must throw NotFoundException when no property is found" in {
 
         val sessionRepository = mock[SessionRepository]
-        val ngrConnector = mock[NGRConnector]
+        val ngrConnector      = mock[NGRConnector]
         when(sessionRepository.get(any)).thenReturn(Future(None))
         when(ngrConnector.getLinkedProperty(any)).thenReturn(Future(None))
-        val action = new Harness(sessionRepository, ngrConnector)
+        val action            = new Harness(sessionRepository, ngrConnector)
 
         intercept[NotFoundException] {
           await(action.callTransform(IdentifierRequest(FakeRequest(), "id", "")))
@@ -74,10 +74,10 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with TestData {
       "must build a userAnswers object and add it to the request" in {
 
         val sessionRepository = mock[SessionRepository]
-        val ngrConnector = mock[NGRConnector]
+        val ngrConnector      = mock[NGRConnector]
         when(sessionRepository.get(any)).thenReturn(Future(Some(UserAnswers("id"))))
         when(ngrConnector.getLinkedProperty(any)).thenReturn(Future(Some(property)))
-        val action = new Harness(sessionRepository, ngrConnector)
+        val action            = new Harness(sessionRepository, ngrConnector)
 
         val result = action.callTransform(new IdentifierRequest(FakeRequest(), "id", "")).futureValue
 

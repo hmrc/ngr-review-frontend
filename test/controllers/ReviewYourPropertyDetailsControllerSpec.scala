@@ -29,9 +29,9 @@ import views.html.ReviewYourPropertyDetailsView
 import scala.concurrent.Future
 
 class ReviewYourPropertyDetailsControllerSpec extends ControllerSpecSupport with DefaultAwaitTimeout with TestData {
-  val pageTitle = "Review your property details"
+  val pageTitle                   = "Review your property details"
   val mockConnector: NGRConnector = mock[NGRConnector]
-  
+
   lazy val reviewYourPropertyDetailsView: ReviewYourPropertyDetailsView = inject[ReviewYourPropertyDetailsView]
 
   def controller() = new ReviewYourPropertyDetailsController(
@@ -46,7 +46,7 @@ class ReviewYourPropertyDetailsControllerSpec extends ControllerSpecSupport with
       "Return OK and render the 'review your property details' page" in {
         when(mockConnector.getLinkedProperty(any())).thenReturn(Future.successful(Some(property)))
         val result = controller().show()(authenticatedFakeRequest)
-        status(result) mustBe OK
+        status(result)        mustBe OK
         contentAsString(result) must include(pageTitle)
       }
       "Throw exception when no property linking is found" in {
