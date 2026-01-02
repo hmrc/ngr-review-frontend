@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package config.features
+package pages
 
-import play.api.Configuration
+import models.AssessmentId
+import play.api.libs.json.JsPath
 
-import javax.inject.Inject
+case class DeclarationPage(assessmentId : AssessmentId) extends QuestionPage[String] {
 
-class Features @Inject()(implicit config: Configuration) {
-  val welshLanguageSupportEnabled = new Feature("features.welsh-language-support")
-  val vmvPropertyLookupTestEnabled = new Feature("vmvPropertyLookupTestEnabled.enabled")
-  val bridgeEndpointEnabled = new Feature("features.bridgeEnabled")
+  override def path: JsPath = JsPath \ assessmentId.value \ toString
+
+  override def toString: String = "declaration"
 }
