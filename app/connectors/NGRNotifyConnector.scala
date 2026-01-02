@@ -42,7 +42,7 @@ class NGRNotifyConnector @Inject()(http: HttpClientV2,
     HeaderNames.CONTENT_TYPE -> "application/json"
   )
 
-  private def url(path: String, assessmentId: AssessmentId): URL = url"${appConfig.nextGenerationRatesNotifyUrl}/ngr-notify/$path/$assessmentId"
+  private def url(path: String, assessmentId: AssessmentId): URL = url"${appConfig.nextGenerationRatesNotifyUrl}/$path/$assessmentId"
 
   def postPropertyChanges(userAnswers: ReviewChangesUserAnswers, assessmentId: AssessmentId)(implicit hc: HeaderCarrier): Future[Int] = {
     if (appConfig.features.bridgeEndpointEnabled()) {
