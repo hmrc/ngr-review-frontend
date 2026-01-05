@@ -27,11 +27,11 @@ class UniqueIdGeneratorSpec extends AnyFreeSpec with Matchers {
 
     "generate a 12-char ID with 2 hyphens in correct format" in {
       val id = UniqueIdGenerator.generateId
-      id.length mustBe 14
+      id.length          mustBe 14
       id.count(_ == '-') mustBe 2
 
       val compactId = UniqueIdGenerator.parse(id)
-      compactId.length mustBe 12
+      compactId.length                           mustBe 12
       compactId.forall(allowedChars.contains(_)) mustBe true
       val formatted = UniqueIdGenerator.format(compactId)
       formatted mustBe id
@@ -71,21 +71,21 @@ class UniqueIdGeneratorSpec extends AnyFreeSpec with Matchers {
     }
 
     "format raw reference correctly" in {
-      val raw = "7GQX2MZKJH9B"
+      val raw       = "7GQX2MZKJH9B"
       val formatted = UniqueIdGenerator.format(raw)
       formatted mustBe "7GQX-2MZK-JH9B"
     }
 
     "parse formatted reference back to raw" in {
       val formatted = "7GQX-2MZK-JH9B"
-      val raw = UniqueIdGenerator.parse(formatted)
+      val raw       = UniqueIdGenerator.parse(formatted)
       raw mustBe "7GQX2MZKJH9B"
     }
 
     "round-trip format and parse should preserve original raw reference" in {
-      val raw = "N8V3W5Y2X4ZT"
+      val raw       = "N8V3W5Y2X4ZT"
       val formatted = UniqueIdGenerator.format(raw)
-      val parsed = UniqueIdGenerator.parse(formatted)
+      val parsed    = UniqueIdGenerator.parse(formatted)
       parsed mustBe raw
     }
   }

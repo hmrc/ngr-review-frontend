@@ -27,26 +27,26 @@ class DeclarationViewSpec extends ViewBaseSpec {
   val assessmentId = AssessmentId("85141561000L")
 
   val view: DeclarationView = app.injector.instanceOf[DeclarationView]
-  val address: String = "123 Street Lane"
+  val address: String       = "123 Street Lane"
 
   object Selectors {
     val firstParagraph = "#para-1"
-    val continue = "#continue"
-
+    val continue       = "#continue"
 
   }
 
   "Declaration view" must {
-    val declarationView = view(assessmentId, address, navBarContent())
-    lazy implicit val document: Document = Jsoup.parse(declarationView.body)
-
+    val declarationView                  = view(assessmentId, address, navBarContent())
+    implicit lazy val document: Document = Jsoup.parse(declarationView.body)
 
     "show correct header" in {
       elementText("h1") mustBe "Declaration"
     }
 
     "show correct " in {
-      elementText(Selectors.firstParagraph) mustBe "By submitting these details, you declare that to the best of your knowledge the information you have given is correct and complete."
+      elementText(
+        Selectors.firstParagraph
+      ) mustBe "By submitting these details, you declare that to the best of your knowledge the information you have given is correct and complete."
     }
 
     "show correct accept and send" in {

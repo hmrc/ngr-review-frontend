@@ -19,7 +19,7 @@ package pages
 import models.AssessmentId
 import play.api.libs.json.JsPath
 
-case class DeclarationPage(assessmentId : AssessmentId) extends QuestionPage[String] {
+case class DeclarationPage(assessmentId: AssessmentId) extends QuestionPage[String] {
 
   override def path: JsPath = JsPath \ assessmentId.value \ toString
 

@@ -50,6 +50,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class NGRNotifyConnectorSpec extends MockHttpV2 {
   val assessmentId                           = AssessmentId("test-assessment-id")
   val ngrNotifyConnector: NGRNotifyConnector = new NGRNotifyConnector(mockHttpClientV2, mockConfig)
+
   val userAnswers: ReviewChangesUserAnswers = ReviewChangesUserAnswers(
     declarationRef = Some("1234")
   )
@@ -62,21 +63,21 @@ class NGRNotifyConnectorSpec extends MockHttpV2 {
   "postPropertyChanges" when {
     "Successfully return a response  when provided correct body" in {
       setupMockHttpV2PostWithHeaderCarrier(
-        s"${mockConfig.nextGenerationRatesNotifyUrl}/example/$assessmentId",
+        s"${mockConfig.ngrNotifyUrl}/ngr-notify/example/$assessmentId",
         Seq("Content-Type" -> "application/json")
       )(HttpResponse(NOT_FOUND, ""))
-      val result: Future[Int] = ngrConnector.postPropertyChanges(userAnswers, assessmentId)
+      val result: Future[Int] = ngrNotifyConnector.postPropertyChanges(userAnswers, assessmentId)
       result.futureValue mustBe NOT_FOUND
     }
 
     "endpoint returns an error" in {
       mockConfig.features.bridgeEndpointEnabled(true)
       setupMockHttpV2PostWithHeaderCarrier(
-        s"${mockConfig.nextGenerationRatesNotifyUrl}/example/$assessmentId",
+        s"${mockConfig.ngrNotifyUrl}/ngr-notify/example/$assessmentId",
         Seq("Content-Type" -> "application/json")
       )(HttpResponse(ACCEPTED, ""))
 
-      val result: Future[Int]  = ngrConnector.postPropertyChanges(userAnswers, assessmentId)
+      val result: Future[Int] = ngrNotifyConnector.postPropertyChanges(userAnswers, assessmentId)
       result.futureValue mustBe ACCEPTED
 
     }
@@ -85,14 +86,14 @@ class NGRNotifyConnectorSpec extends MockHttpV2 {
   "getReviewDetails" when {
     "should call the correct URL" in {
       val sampleResponse: ReviewDetails = ReviewDetails("Sample Property")
-      setupMockHttpV2Get(s"${mockConfig.ngrNotifyUrl}/ngr-notify/review-properties")(Some(sampleResponse))
+      setupMockHttpV2Get(s"${mockConfig.ngrNotifyUrl}/ngr-notify/review-properties/$assessmentId")(Some(sampleResponse))
 
       val result: Future[Option[ReviewDetails]] = ngrNotifyConnector.getReviewDetails(assessmentId)
       result.futureValue.value mustBe ReviewDetails("Sample Property")
     }
 
     "should return None when no data is found" in {
-      setupMockHttpV2Get(s"${mockConfig.ngrNotifyUrl}/ngr-notify/review-properties")(None)
+      setupMockHttpV2Get(s"${mockConfig.ngrNotifyUrl}/ngr-notify/review-properties/$assessmentId")(None)
 
       val result = ngrNotifyConnector.getReviewDetails(assessmentId)
       result.futureValue mustBe None

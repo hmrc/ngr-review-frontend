@@ -17,10 +17,9 @@
 package connectors
 
 import config.{AppConfig, FrontendAppConfig}
-import models.{AssessmentId, ReviewDetails}
 import models.propertyLinking.{PropertyLinkingUserAnswers, VMVProperty}
 import models.registration.{CredId, RatepayerRegistrationValuation}
-import models.{AssessmentId, ReviewChangesUserAnswers}
+import models.{AssessmentId, ReviewChangesUserAnswers, ReviewDetails}
 import play.api.Logging
 import play.api.http.Status.ACCEPTED
 import play.api.libs.json.Json
@@ -29,38 +28,40 @@ import play.mvc.Http.HeaderNames
 import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
 import uk.gov.hmrc.http.HttpReads.Implicits.*
 import uk.gov.hmrc.http.client.HttpClientV2
-import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, NotFoundException, StringContextOps}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse, NotFoundException, StringContextOps}
 
 import java.net.URL
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
-
 @Singleton
-class NGRNotifyConnector @Inject()(http: HttpClientV2,
-                                   appConfig: AppConfig,
-                            )(implicit ec: ExecutionContext) extends Logging {
+class NGRNotifyConnector @Inject() (
+  http: HttpClientV2,
+  appConfig: AppConfig
+)(implicit ec: ExecutionContext
+) extends Logging {
+
   private val headers = Map(
     HeaderNames.CONTENT_TYPE -> "application/json"
   )
 
-  private def url(path: String, assessmentId: AssessmentId): URL = url"${appConfig.nextGenerationRatesNotifyUrl}/$path/$assessmentId"
+  private def url(path: String, assessmentId: AssessmentId): URL = url"${appConfig.ngrNotifyUrl}/ngr-notify/$path/$assessmentId"
 
-  def postPropertyChanges(userAnswers: ReviewChangesUserAnswers, assessmentId: AssessmentId)(implicit hc: HeaderCarrier): Future[Int] = {
+  def postPropertyChanges(userAnswers: ReviewChangesUserAnswers, assessmentId: AssessmentId)(implicit hc: HeaderCarrier): Future[Int] =
     if (appConfig.features.bridgeEndpointEnabled()) {
-     http.post(url("example", assessmentId)) //TODO add correct url when endpoint on notify is built
+      http.post(url("example", assessmentId)) // TODO add correct url when endpoint on notify is built
         .withBody(Json.toJson(userAnswers))
-        .setHeader(headers.toSeq *)
+        .setHeader(headers.toSeq*)
         .execute[HttpResponse]
         .map(_.status)
     } else {
       Future.successful(ACCEPTED)
     }
+
   def getReviewDetails(assessmentId: AssessmentId)(implicit hc: HeaderCarrier): Future[Option[ReviewDetails]] = {
     implicit val rds: HttpReads[ReviewDetails] = readFromJson
-    http.get(url("review-properties"))
+    println("Calling NGR Notify Connector - getReviewDetails" + url("review-properties", assessmentId))
+    http.get(url("review-properties", assessmentId))
       .execute[Option[ReviewDetails]]
   }
-
 }

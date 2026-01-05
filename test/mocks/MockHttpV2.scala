@@ -65,7 +65,7 @@ trait MockHttpV2 extends TestSupport with BeforeAndAfterEach {
   def setupMockHttpV2PostWithHeaderCarrier[T](url: String, headers: Seq[(String, String)])(response: T): OngoingStubbing[Future[T]] = {
     when(mockHttpClientV2.post(ArgumentMatchers.eq(url"$url"))(any()))
       .thenReturn(mockRequestBuilder)
-    when(mockRequestBuilder.setHeader(headers *))
+    when(mockRequestBuilder.setHeader(headers*))
       .thenReturn(mockRequestBuilder)
     when(mockRequestBuilder.withBody(any())(using any(), any(), any())).thenReturn(mockRequestBuilder)
     when(mockRequestBuilder.transform(any())).thenReturn(mockRequestBuilder)

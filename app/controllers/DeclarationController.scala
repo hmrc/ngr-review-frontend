@@ -36,16 +36,20 @@ import java.time.LocalDate
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class DeclarationController @Inject()(
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: DeclarationView,
-                                       authenticate: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       sessionRepository: SessionRepository,
-                                       connector: NGRNotifyConnector,
-                                       errorTemplate: ErrorTemplate
-                                     )(implicit ec: ExecutionContext, appConfig: AppConfig)  extends FrontendBaseController with I18nSupport with Logging {
+class DeclarationController @Inject() (
+  val controllerComponents: MessagesControllerComponents,
+  view: DeclarationView,
+  authenticate: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  connector: NGRNotifyConnector,
+  errorTemplate: ErrorTemplate
+)(implicit ec: ExecutionContext,
+  appConfig: AppConfig
+) extends FrontendBaseController
+  with I18nSupport
+  with Logging {
 
   def show(assessmentId: AssessmentId): Action[AnyContent] =
     (authenticate andThen getData andThen requireData) {
@@ -54,22 +58,22 @@ class DeclarationController @Inject()(
     }
 
   def next(assessmentId: AssessmentId): Action[AnyContent] =
-    (authenticate andThen getData andThen requireData).async  {
+    (authenticate andThen getData andThen requireData).async {
       implicit request =>
-            request.userAnswers.get(DeclarationPage(assessmentId)) match {
-              case None =>
-                val generateRef =  UniqueIdGenerator.generateId
-                for {
-                  updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage(assessmentId), generateRef))
-                  _ <- sessionRepository.set(updatedAnswers)
-                  response <- connector.postPropertyChanges(ReviewChangesUserAnswers(declarationRef = Some(generateRef)), assessmentId)
-                } yield response match {
-                  case ACCEPTED => Redirect(routes.SubmissionConfirmationController.onPageLoad(assessmentId.value))
-                }
-              case Some(value) =>
-                connector.postPropertyChanges(ReviewChangesUserAnswers(declarationRef = Some(value)), assessmentId).map {
-                  case ACCEPTED => Redirect(routes.SubmissionConfirmationController.onPageLoad(assessmentId.value))
-                }
+        request.userAnswers.get(DeclarationPage(assessmentId)) match {
+          case None        =>
+            val generateRef = UniqueIdGenerator.generateId
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage(assessmentId), generateRef))
+              _              <- sessionRepository.set(updatedAnswers)
+              response       <- connector.postPropertyChanges(ReviewChangesUserAnswers(declarationRef = Some(generateRef)), assessmentId)
+            } yield response match {
+              case ACCEPTED => Redirect(routes.SubmissionConfirmationController.onPageLoad(assessmentId.value))
             }
+          case Some(value) =>
+            connector.postPropertyChanges(ReviewChangesUserAnswers(declarationRef = Some(value)), assessmentId).map {
+              case ACCEPTED => Redirect(routes.SubmissionConfirmationController.onPageLoad(assessmentId.value))
+            }
+        }
     }
 }

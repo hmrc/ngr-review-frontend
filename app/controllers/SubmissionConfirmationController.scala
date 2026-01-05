@@ -33,10 +33,8 @@ class SubmissionConfirmationController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   val controllerComponents: MessagesControllerComponents,
-  view: SubmissionConfirmationView,
-  sessionRepository: SessionRepository
-)(implicit appConfig: AppConfig,
-  ec: ExecutionContext
+  view: SubmissionConfirmationView
+)(implicit appConfig: AppConfig
 ) extends FrontendBaseController
   with I18nSupport {
 

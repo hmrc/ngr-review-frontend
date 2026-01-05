@@ -21,9 +21,9 @@ import java.security.SecureRandom
 object UniqueIdGenerator {
 
   private[utils] val allowedChars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
-  private val generator = new SecureRandom()
-  private val referenceLength = 12
-  private val groupSize = 4
+  private val generator           = new SecureRandom()
+  private val referenceLength     = 12
+  private val groupSize           = 4
 
   def generateId: String = {
     val raw = (1 to referenceLength)

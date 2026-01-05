@@ -79,7 +79,7 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with TestData {
         when(ngrConnector.getLinkedProperty(any)).thenReturn(Future(Some(property)))
         val action            = new Harness(sessionRepository, ngrConnector)
 
-        val result = action.callTransform(new IdentifierRequest(FakeRequest(), "id", "")).futureValue
+        val result = action.callTransform(IdentifierRequest(FakeRequest(), "id", "")).futureValue
 
         result.userAnswers mustBe defined
       }
