@@ -29,7 +29,7 @@
 
 @(assessmentId: AssessmentId, address: String, navigationBarContent: NavigationBarContent)(implicit request: RequestHeader, messages: Messages, appConfig: AppConfig)
 
-@layout(pageTitle = Some(messages("submissionConfirmation.title")), showBackLink = true, navigationBarContent = Some(navigationBarContent)) {
+@layout(pageTitle = Some(messages("declaration.heading")), showBackLink = true, navigationBarContent = Some(navigationBarContent)) {
     @formHelper(action = routes.DeclarationController.next(assessmentId), Symbol("autoComplete") -> "off") {
         <span class="govuk-caption-m">@address</span>
         @h1(msg = messages("declaration.heading"), size = "l", id = Some("page-heading"))
