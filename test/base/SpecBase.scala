@@ -62,7 +62,6 @@ trait SpecBase extends AnyFreeSpec with Matchers with TryValues with OptionValue
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].to[FakeIdentifierAction],
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
-        bind[RegistrationAction].to[FakeRegistrationAction],
         bind[SessionRepository].toInstance(mockSessionRepository)
       )
 

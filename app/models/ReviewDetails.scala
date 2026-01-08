@@ -19,10 +19,34 @@ package models
 import models.propertyLinking.VMVProperty
 import models.registration.RatepayerRegistrationValuation
 import play.api.libs.json.{Json, OFormat}
+
 import java.time.LocalDate
 
-final case class ReviewDetails(address: String)
+case class PhysicalDetails(
+  description: String,
+  quantity: BigDecimal,
+  units: String
+)
 
-object ReviewDetails {
-  implicit val format: OFormat[ReviewDetails] = Json.format[ReviewDetails]
-}
+object PhysicalDetails:
+  given OFormat[PhysicalDetails] = Json.format
+
+case class LevelSummary(
+  label: String,
+  spaces: List[PhysicalDetails],
+  totalArea: BigDecimal
+)
+
+object LevelSummary:
+  given OFormat[LevelSummary] = Json.format
+
+final case class ReviewDetails(
+  floorsInfo: List[LevelSummary],
+  otherAdditionInfo: List[LevelSummary],
+  parkingInfo: List[LevelSummary],
+  totalArea: BigDecimal,
+  fullAddress: Option[String]
+)
+
+object ReviewDetails:
+  given OFormat[ReviewDetails] = Json.format

@@ -51,10 +51,10 @@ class NGRConnector @Inject() (
       .execute[Option[PropertyLinkingUserAnswers]]
   }
 
-  def getLinkedProperty(implicit hc: HeaderCarrier): Future[Option[VMVProperty]] =
+  def getLinkedProperty(implicit hc: HeaderCarrier): Future[VMVProperty] =
     getPropertyLinkingUserAnswers
       .map {
-        case Some(propertyLinkingUserAnswers) => Some(propertyLinkingUserAnswers.vmvProperty)
+        case Some(propertyLinkingUserAnswers) => propertyLinkingUserAnswers.vmvProperty
         case None                             => throw new NotFoundException("failed to find propertyLinkingUserAnswers from backend mongo")
       }
 

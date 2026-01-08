@@ -85,11 +85,12 @@ class NGRNotifyConnectorSpec extends MockHttpV2 {
 
   "getReviewDetails" when {
     "should call the correct URL" in {
-      val sampleResponse: ReviewDetails = ReviewDetails("Sample Property")
+      val sampleResponse: ReviewDetails =
+        ReviewDetails(floorsInfo = List.empty, otherAdditionInfo = List.empty, parkingInfo = List.empty, totalArea = 100, fullAddress = None)
       setupMockHttpV2Get(s"${mockConfig.ngrNotifyUrl}/ngr-notify/review-properties/$assessmentId")(Some(sampleResponse))
 
       val result: Future[Option[ReviewDetails]] = ngrNotifyConnector.getReviewDetails(assessmentId)
-      result.futureValue.value mustBe ReviewDetails("Sample Property")
+      result.futureValue.value mustBe sampleResponse
     }
 
     "should return None when no data is found" in {

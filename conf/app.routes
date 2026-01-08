@@ -30,4 +30,6 @@ GET        /manage-business-rates-valuation/review/shop/property-review-complete
 GET        /manage-business-rates-valuation/review/shop/declaration/:assessmentId                controllers.DeclarationController.show(assessmentId: AssessmentId)
 POST       /manage-business-rates-valuation/review/shop/declaration/:assessmentId                controllers.DeclarationController.next(assessmentId: AssessmentId)
 
-GET        /review-your-property-details                 controllers.ReviewYourPropertyDetailsController.show
+GET        /review-your-property-details/:assessmentId                                           controllers.ReviewYourPropertyDetailsController.show(assessmentId: AssessmentId)
+
+GET        /your-property-details/:assessmentId                                                  controllers.ReviewDetailsController.onPageLoad(assessmentId: AssessmentId)

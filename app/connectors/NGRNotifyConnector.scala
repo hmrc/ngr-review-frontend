@@ -60,7 +60,6 @@ class NGRNotifyConnector @Inject() (
 
   def getReviewDetails(assessmentId: AssessmentId)(implicit hc: HeaderCarrier): Future[Option[ReviewDetails]] = {
     implicit val rds: HttpReads[ReviewDetails] = readFromJson
-    println("Calling NGR Notify Connector - getReviewDetails" + url("review-properties", assessmentId))
     http.get(url("review-properties", assessmentId))
       .execute[Option[ReviewDetails]]
   }

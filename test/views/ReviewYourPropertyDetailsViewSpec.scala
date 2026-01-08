@@ -17,7 +17,7 @@
 package views
 
 import helpers.ViewBaseSpec
-import models.{NavBarPageContents, NavigationBarContent}
+import models.{AssessmentId, NavBarPageContents, NavigationBarContent}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.html.ReviewYourPropertyDetailsView
@@ -26,6 +26,7 @@ class ReviewYourPropertyDetailsViewSpec extends ViewBaseSpec {
   lazy val view: ReviewYourPropertyDetailsView = inject[ReviewYourPropertyDetailsView]
   val content: NavigationBarContent            = NavBarPageContents.createDefaultNavBar
   val address                                  = "Bug Me Not PVT LTD, RODLEY LANE, RODLEY, LEEDS, BH1 1HU"
+  val assessmentId                             = AssessmentId("id")
 
   object Selectors {
     val homeButton = "#secondary-nav > a > span"
@@ -41,11 +42,11 @@ class ReviewYourPropertyDetailsViewSpec extends ViewBaseSpec {
   }
 
   "ReviewYourPropertyDetailsView" must {
-    val reviewYourPropertyDetailsView    = view(content, address)
+    val reviewYourPropertyDetailsView    = view(content, assessmentId, address)
     implicit lazy val document: Document = Jsoup.parse(reviewYourPropertyDetailsView.body)
-    val htmlApply                        = view.apply(content, address).body
-    val htmlRender                       = view.render(content, address, request, messages, mockConfig).body
-    lazy val htmlF                       = view.f(content, address)
+    val htmlApply                        = view.apply(content, assessmentId, address).body
+    val htmlRender                       = view.render(content, assessmentId, address, request, messages, mockConfig).body
+    lazy val htmlF                       = view.f(content, assessmentId, address)
 
     "htmlF is not empty" in {
       htmlF.toString() must not be empty
