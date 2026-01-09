@@ -59,7 +59,7 @@ class ReviewDetailsController @Inject() (
   }
 
   private def createSectionList(reviewDetails: ReviewDetails)(implicit messages: Messages): Seq[Section] = {
-    val areaStr = reviewDetails.totalArea.setScale(2, scala.math.BigDecimal.RoundingMode.HALF_UP).toString
+    val areaStr                      = reviewDetails.totalArea.setScale(2, scala.math.BigDecimal.RoundingMode.HALF_UP).toString
     val totalAreaRow: SummaryListRow = SummaryListRowViewModel(
       key = "reviewDetails.total.area",
       value = ValueViewModel(areaStr),
@@ -67,13 +67,13 @@ class ReviewDetailsController @Inject() (
     )
 
     val totalSection = buildSection(None, None, Seq(totalAreaRow), noBorder = true)
-  
-    val parkingSpaces = reviewDetails.parkingInfo.flatMap(_.spaces).map(spaceSummaryRow)
+
+    val parkingSpaces  = reviewDetails.parkingInfo.flatMap(_.spaces).map(spaceSummaryRow)
     val parkingSection = Option.when(parkingSpaces.nonEmpty)(
       buildSection(Some("reviewDetails.parking"), None, parkingSpaces)
     ).toSeq
-  
-    val otherSpaces = reviewDetails.otherAdditionInfo.flatMap(_.spaces).map(spaceSummaryRow)
+
+    val otherSpaces           = reviewDetails.otherAdditionInfo.flatMap(_.spaces).map(spaceSummaryRow)
     val otherAdditionsSection = Option.when(otherSpaces.nonEmpty)(
       buildSection(Some("reviewDetails.other.additions"), None, otherSpaces)
     ).toSeq
@@ -100,7 +100,7 @@ class ReviewDetailsController @Inject() (
 
   private def buildSection(heading: Option[String], subHeading: Option[String] = None, rows: Seq[SummaryListRow] = Seq.empty, noBorder: Boolean = false)
     : Section =
-    val base = SummaryListViewModel(rows)
+    val base    = SummaryListViewModel(rows)
     val summary = if (noBorder) base.withCssClass("govuk-summary-list--no-border") else base
     Section(heading, subHeading, summary)
 
