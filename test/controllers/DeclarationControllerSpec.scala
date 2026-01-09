@@ -74,7 +74,7 @@ class DeclarationControllerSpec extends ControllerSpecSupport with TryValues {
           controllerWithUserAnswers(Some(minUserAnswers.remove(DeclarationPage(assessmentId)).success.value)).next(assessmentId)(authenticatedFakeRequest)
 
         status(result)                 mustBe SEE_OTHER
-        redirectLocation(result).value mustBe routes.SubmissionConfirmationController.onPageLoad(assessmentId.value).url
+        redirectLocation(result).value mustBe routes.SubmissionConfirmationController.onPageLoad(assessmentId).url
       }
 
       "redirect when accepted and DeclarationPage data is present with generated Reference" in {
@@ -83,7 +83,7 @@ class DeclarationControllerSpec extends ControllerSpecSupport with TryValues {
         val result = controllerWithUserAnswers(Some(minUserAnswers)).next(assessmentId)(authenticatedFakeRequest)
 
         status(result)                 mustBe SEE_OTHER
-        redirectLocation(result).value mustBe routes.SubmissionConfirmationController.onPageLoad(assessmentId.value).url
+        redirectLocation(result).value mustBe routes.SubmissionConfirmationController.onPageLoad(assessmentId).url
       }
 
     }

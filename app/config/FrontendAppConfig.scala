@@ -18,6 +18,7 @@ package config
 
 import com.google.inject.{Inject, Singleton}
 import config.features.Features
+import models.AssessmentId
 import play.api.Configuration
 import play.api.i18n.Lang
 import play.api.mvc.RequestHeader
@@ -25,6 +26,7 @@ import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 trait AppConfig {
   val registrationUrl: String
+  def ngrPhysicalStartUrl(assessmentId: AssessmentId): String
   val dashboardUrl: String
   val ngrLogoutUrl: String
   val nextGenerationRatesUrl: String
@@ -48,13 +50,15 @@ class FrontendAppConfig @Inject() (configuration: Configuration, sc: ServicesCon
   val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
   val signOutUrl: String       = configuration.get[String]("urls.signOut")
 
-  val dashboardHost: String                   = getString("microservice.services.ngr-dashboard-frontend.host")
-  val registrationHost: String                = getString("microservice.services.ngr-login-register-frontend.host")
-  override val dashboardUrl: String           = s"$dashboardHost/ngr-dashboard-frontend/dashboard"
-  override val ngrLogoutUrl: String           = s"$dashboardHost/ngr-dashboard-frontend/signout"
-  override val nextGenerationRatesUrl: String = sc.baseUrl("next-generation-rates")
-  override val ngrNotifyUrl: String           = sc.baseUrl("ngr-notify")
-  override val features                       = new Features()(configuration)
+  private val dashboardHost: String                                    = getString("microservice.services.ngr-dashboard-frontend.host")
+  private val registrationHost: String                                 = getString("microservice.services.ngr-login-register-frontend.host")
+  private val physicalHost: String                                     = getString("microservice.services.ngr-physical-frontend.host")
+  override val dashboardUrl: String                                    = s"$dashboardHost/ngr-dashboard-frontend/dashboard"
+  override val ngrLogoutUrl: String                                    = s"$dashboardHost/ngr-dashboard-frontend/signout"
+  override val nextGenerationRatesUrl: String                          = sc.baseUrl("next-generation-rates")
+  override val ngrNotifyUrl: String                                    = sc.baseUrl("ngr-notify")
+  override def ngrPhysicalStartUrl(assessmentId: AssessmentId): String = s"$physicalHost/ngr-physical-frontend/when-complete-change/:assessmentId"
+  override val features                                                = new Features()(configuration)
 
   override val registrationUrl: String = s"$registrationHost/ngr-login-register-frontend/register"
 

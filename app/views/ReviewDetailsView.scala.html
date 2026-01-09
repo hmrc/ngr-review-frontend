@@ -45,8 +45,8 @@ govukButton: GovukButton
     <div class="govuk-button-group">
         @govukButton(
         ButtonViewModel(messages("reviewDetails.are.correct"))
-        .asLink(routes.IndexController.onPageLoad().url)
+        .asLink(routes.DeclarationController.show(assessmentId).url)
         )
-        <a class="govuk-link" href="change-feature-date">Change property details</a>
+        <a class="govuk-link" href="@appConfig.ngrPhysicalStartUrl(assessmentId)">@messages("reviewDetails.change.details")</a>
     </div>
 }

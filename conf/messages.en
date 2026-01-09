@@ -101,6 +101,7 @@ reviewDetails.are.correct = Property details are correct
 reviewDetails.floor.space = Floor space
 reviewDetails.internal.features = Internal features
 reviewDetails.external.features = External features
+reviewDetails.change.details = Change property details
 floor_level_gf_to_gf = Ground floor
 floor_level_ff_to_ff = First floor
 floor_level_2f_to_2f = Second floor
