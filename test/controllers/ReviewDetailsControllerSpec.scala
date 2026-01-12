@@ -63,7 +63,7 @@ class ReviewDetailsControllerSpec extends SpecBase with BeforeAndAfterEach with 
       implicit val message: Messages = messages(application)
       val totalAreaRow               = SummaryListRowViewModel(
         key = "reviewDetails.total.area",
-        value = ValueViewModel("100.00"),
+        value = ValueViewModel(HtmlContent("100.00m<sup>2</sup>")),
         actions = Seq.empty
       )
 

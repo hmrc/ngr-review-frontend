@@ -49,7 +49,7 @@ class ReviewDetailsHelperSpec extends AnyFreeSpec {
       sections.size                              mustBe 7
       sections.head.rows.rows.size               mustBe 1
       sections.head.rows.rows.head.key.content   mustBe Text("reviewDetails.total.area")
-      sections.head.rows.rows.head.value.content mustBe Text("123.45")
+      sections.head.rows.rows.head.value.content mustBe HtmlContent("123.45m<sup>2</sup>")
       sections(1).title                          mustBe Some("first_floor")
       sections(2).rows.rows.size                 mustBe 2
       sections(2).rows.rows.head.key.content     mustBe Text("Office Space")
@@ -75,7 +75,7 @@ class ReviewDetailsHelperSpec extends AnyFreeSpec {
         floorsInfo = List.empty,
         otherAdditionInfo = List.empty,
         parkingInfo = List.empty,
-        totalArea = BigDecimal(0),
+        totalArea = BigDecimal(12),
         fullAddress = Some("some address")
       )
 
@@ -83,7 +83,7 @@ class ReviewDetailsHelperSpec extends AnyFreeSpec {
       sections.size                              mustBe 1
       sections.head.rows.rows.size               mustBe 1
       sections.head.rows.rows.head.key.content   mustBe Text("reviewDetails.total.area")
-      sections.head.rows.rows.head.value.content mustBe Text("0.00")
+      sections.head.rows.rows.head.value.content mustBe HtmlContent("12.00m<sup>2</sup>")
 
     }
   }

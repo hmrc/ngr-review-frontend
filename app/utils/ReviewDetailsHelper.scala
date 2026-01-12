@@ -37,7 +37,7 @@ object ReviewDetailsHelper {
     val areaStr                      = reviewDetails.totalArea.setScale(2, scala.math.BigDecimal.RoundingMode.HALF_UP).toString
     val totalAreaRow: SummaryListRow = SummaryListRowViewModel(
       key = "reviewDetails.total.area",
-      value = ValueViewModel(areaStr),
+      value = ValueViewModel(HtmlContent(s"${areaStr}m<sup>2</sup>")),
       actions = Seq.empty
     )
 
