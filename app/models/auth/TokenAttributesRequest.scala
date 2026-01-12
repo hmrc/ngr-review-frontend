@@ -18,8 +18,8 @@ package models.auth
 
 import play.api.libs.json.{Format, Json}
 
-final case class TokenAttributesRequest (value: String)
+final case class TokenAttributesRequest(value: String)
 
 object TokenAttributesRequest {
-  implicit val format:Format[TokenAttributesRequest] = Json.format[TokenAttributesRequest]
+  implicit val format: Format[TokenAttributesRequest] = Json.format[TokenAttributesRequest]
 }

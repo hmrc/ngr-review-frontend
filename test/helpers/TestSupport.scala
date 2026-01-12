@@ -16,8 +16,8 @@
 
 package helpers
 
+import config.FrontendAppConfig
 import connectors.NGRConnector
-import mocks.MockAppConfig
 import models.requests.IdentifierRequest
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
@@ -34,7 +34,8 @@ import uk.gov.hmrc.http.{HeaderCarrier, HeaderNames}
 
 import scala.concurrent.ExecutionContext
 
-trait TestSupport extends PlaySpec
+trait TestSupport
+  extends PlaySpec
   with GuiceOneAppPerSuite
   with Matchers
   with MockitoSugar
@@ -43,27 +44,27 @@ trait TestSupport extends PlaySpec
   with ScalaFutures
   with IntegrationPatience {
 
-  implicit lazy val ec: ExecutionContext = inject[ExecutionContext]
-  implicit val hc: HeaderCarrier = HeaderCarrier()
-  lazy implicit val mockConfig: MockAppConfig = new MockAppConfig(app.configuration)
-  lazy val mcc: MessagesControllerComponents = inject[MessagesControllerComponents]
-  lazy val messagesApi: MessagesApi = inject[MessagesApi]
-  implicit lazy val messages: Messages = MessagesImpl(Lang("en"), messagesApi)
-  val mockNGRConnector: NGRConnector = mock[NGRConnector]
+  implicit lazy val ec: ExecutionContext          = inject[ExecutionContext]
+  implicit val hc: HeaderCarrier                  = HeaderCarrier()
+  implicit lazy val mockConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
+  lazy val mcc: MessagesControllerComponents      = inject[MessagesControllerComponents]
+  lazy val messagesApi: MessagesApi               = inject[MessagesApi]
+  implicit lazy val messages: Messages            = MessagesImpl(Lang("en"), messagesApi)
+  val mockNGRConnector: NGRConnector              = mock[NGRConnector]
 
-  lazy val testCredId: Credentials = Credentials(providerId = "0000000022", providerType = "Government-Gateway")
-  lazy val testNino: String = "AA000003D"
+  lazy val testCredId: Credentials              = Credentials(providerId = "0000000022", providerType = "Government-Gateway")
+  lazy val testNino: String                     = "AA000003D"
   lazy val testConfidenceLevel: ConfidenceLevel = ConfidenceLevel.L250
-  lazy val testEmail: String = "user@test.com"
-  lazy val testAffinityGroup: AffinityGroup = AffinityGroup.Individual
-  lazy val testName: Name = Name(name = Some("testUser"), lastName = Some("testUserLastName"))
+  lazy val testEmail: String                    = "user@test.com"
+  lazy val testAffinityGroup: AffinityGroup     = AffinityGroup.Individual
+  lazy val testName: Name                       = Name(name = Some("testUser"), lastName = Some("testUserLastName"))
 
   lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest("", "").withHeaders(HeaderNames.authorisation -> "Bearer 1")
 
   lazy val authenticatedFakeRequest: IdentifierRequest[AnyContentAsEmpty.type] =
     IdentifierRequest(fakeRequest, "id", "id")
-    
+
   def requestWithForm(formData: Map[String, String]): IdentifierRequest[AnyContentAsFormUrlEncoded] =
     IdentifierRequest(
       fakeRequest.withFormUrlEncodedBody(formData.toSeq*),

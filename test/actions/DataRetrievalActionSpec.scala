@@ -22,13 +22,14 @@ import controllers.actions.DataRetrievalActionImpl
 import helpers.TestData
 import models.UserAnswers
 import models.requests.{IdentifierRequest, OptionalDataRequest}
-import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.{any, anyString}
 import org.mockito.Mockito.*
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import repositories.SessionRepository
-import uk.gov.hmrc.http.NotFoundException
+import uk.gov.hmrc.hmrcfrontend.views.viewmodels.header.Header
+import uk.gov.hmrc.http.{HeaderCarrier, NotFoundException}
 
 import scala.concurrent.Future
 
@@ -45,27 +46,14 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with TestData {
       "must set userAnswers to 'None' in the request" in {
 
         val sessionRepository = mock[SessionRepository]
-        val ngrConnector = mock[NGRConnector]
-        when(sessionRepository.get(any)).thenReturn(Future(None))
-        when(ngrConnector.getLinkedProperty(any)).thenReturn(Future(Some(property)))
-        val action = new Harness(sessionRepository, ngrConnector)
+        val ngrConnector      = mock[NGRConnector]
+        when(sessionRepository.get(anyString)).thenReturn(Future.successful(None))
+        when(ngrConnector.getLinkedProperty(any[HeaderCarrier])).thenReturn(Future.successful(property))
+        val action            = new Harness(sessionRepository, ngrConnector)
 
         val result = action.callTransform(IdentifierRequest(FakeRequest(), "id", "")).futureValue
 
         result.userAnswers must not be defined
-      }
-      
-      "must throw NotFoundException when no property is found" in {
-
-        val sessionRepository = mock[SessionRepository]
-        val ngrConnector = mock[NGRConnector]
-        when(sessionRepository.get(any)).thenReturn(Future(None))
-        when(ngrConnector.getLinkedProperty(any)).thenReturn(Future(None))
-        val action = new Harness(sessionRepository, ngrConnector)
-
-        intercept[NotFoundException] {
-          await(action.callTransform(IdentifierRequest(FakeRequest(), "id", "")))
-        }
       }
     }
 
@@ -74,12 +62,12 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with TestData {
       "must build a userAnswers object and add it to the request" in {
 
         val sessionRepository = mock[SessionRepository]
-        val ngrConnector = mock[NGRConnector]
-        when(sessionRepository.get(any)).thenReturn(Future(Some(UserAnswers("id"))))
-        when(ngrConnector.getLinkedProperty(any)).thenReturn(Future(Some(property)))
-        val action = new Harness(sessionRepository, ngrConnector)
+        val ngrConnector      = mock[NGRConnector]
+        when(sessionRepository.get(anyString)).thenReturn(Future.successful(Some(UserAnswers("id"))))
+        when(ngrConnector.getLinkedProperty(any[HeaderCarrier])).thenReturn(Future.successful(property))
+        val action            = new Harness(sessionRepository, ngrConnector)
 
-        val result = action.callTransform(new IdentifierRequest(FakeRequest(), "id", "")).futureValue
+        val result = action.callTransform(IdentifierRequest(FakeRequest(), "id", "")).futureValue
 
         result.userAnswers mustBe defined
       }

@@ -18,6 +18,7 @@ package config
 
 import com.google.inject.{Inject, Singleton}
 import config.features.Features
+import models.AssessmentId
 import play.api.Configuration
 import play.api.i18n.Lang
 import play.api.mvc.RequestHeader
@@ -25,42 +26,44 @@ import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 trait AppConfig {
   val registrationUrl: String
+  def ngrPhysicalStartUrl(assessmentId: AssessmentId): String
   val dashboardUrl: String
   val ngrLogoutUrl: String
   val nextGenerationRatesUrl: String
-  val nextGenerationRatesNotifyUrl: String
+  val ngrNotifyUrl: String
   val features: Features
 }
 
 @Singleton
-class FrontendAppConfig @Inject()(configuration: Configuration, sc: ServicesConfig) extends AppConfig {
+class FrontendAppConfig @Inject() (configuration: Configuration, sc: ServicesConfig) extends AppConfig {
 
-  val host: String = configuration.get[String]("host")
+  val host: String    = configuration.get[String]("host")
   val appName: String = configuration.get[String]("appName")
 
-  private val contactHost = configuration.get[String]("contact-frontend.host")
+  private val contactHost                  = configuration.get[String]("contact-frontend.host")
   private val contactFormServiceIdentifier = "ngr-review-frontend"
 
   def feedbackUrl(implicit request: RequestHeader): String =
     s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${host + request.uri}"
 
-  val loginUrl: String = configuration.get[String]("urls.login")
+  val loginUrl: String         = configuration.get[String]("urls.login")
   val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
-  val signOutUrl: String = configuration.get[String]("urls.signOut")
+  val signOutUrl: String       = configuration.get[String]("urls.signOut")
 
-  val dashboardHost: String = getString("microservice.services.ngr-dashboard-frontend.host")
-  val registrationHost: String = getString("microservice.services.ngr-login-register-frontend.host")
-  override val dashboardUrl: String = s"$dashboardHost/ngr-dashboard-frontend/dashboard"
-  override val ngrLogoutUrl: String = s"$dashboardHost/ngr-dashboard-frontend/signout"
-  override val nextGenerationRatesUrl: String = sc.baseUrl("next-generation-rates")
-  override val nextGenerationRatesNotifyUrl: String = s"${sc.baseUrl("ngr-notify")}/ngr-notify"
-
-  override val features = new Features()(configuration)
+  private val dashboardHost: String                                    = getString("microservice.services.ngr-dashboard-frontend.host")
+  private val registrationHost: String                                 = getString("microservice.services.ngr-login-register-frontend.host")
+  private val physicalHost: String                                     = getString("microservice.services.ngr-physical-frontend.host")
+  override val dashboardUrl: String                                    = s"$dashboardHost/ngr-dashboard-frontend/dashboard"
+  override val ngrLogoutUrl: String                                    = s"$dashboardHost/ngr-dashboard-frontend/signout"
+  override val nextGenerationRatesUrl: String                          = sc.baseUrl("next-generation-rates")
+  override val ngrNotifyUrl: String                                    = sc.baseUrl("ngr-notify")
+  override def ngrPhysicalStartUrl(assessmentId: AssessmentId): String = s"$physicalHost/ngr-physical-frontend/when-complete-change/:assessmentId"
+  override val features                                                = new Features()(configuration)
 
   override val registrationUrl: String = s"$registrationHost/ngr-login-register-frontend/register"
 
   private val exitSurveyBaseUrl: String = configuration.get[Service]("microservice.services.feedback-frontend").baseUrl
-  val exitSurveyUrl: String = s"$exitSurveyBaseUrl/feedback/ngr-review-frontend"
+  val exitSurveyUrl: String             = s"$exitSurveyBaseUrl/feedback/ngr-review-frontend"
 
   val languageTranslationEnabled: Boolean =
     configuration.get[Boolean]("features.welsh-translation")
@@ -70,7 +73,7 @@ class FrontendAppConfig @Inject()(configuration: Configuration, sc: ServicesConf
     "cy" -> Lang("cy")
   )
 
-  val timeout: Int = configuration.get[Int]("timeout-dialog.timeout")
+  val timeout: Int   = configuration.get[Int]("timeout-dialog.timeout")
   val countdown: Int = configuration.get[Int]("timeout-dialog.countdown")
 
   val cacheTtl: Long = configuration.get[Int]("mongodb.timeToLiveInSeconds")

@@ -18,7 +18,9 @@ package controllers
 
 import config.AppConfig
 import controllers.actions.*
+import models.AssessmentId
 import models.NavBarPageContents.createDefaultNavBar
+import pages.DeclarationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -29,16 +31,22 @@ import views.html.SubmissionConfirmationView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class SubmissionConfirmationController @Inject()(
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: SubmissionConfirmationView,
-                                       sessionRepository: SessionRepository
-                                     )(implicit appConfig: AppConfig, ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class SubmissionConfirmationController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  val controllerComponents: MessagesControllerComponents,
+  view: SubmissionConfirmationView
+)(implicit appConfig: AppConfig
+) extends FrontendBaseController
+  with I18nSupport {
 
-  def onPageLoad(propertyReference: String): Action[AnyContent] = (identify andThen getData).async {
+  def onPageLoad(assessmentId: AssessmentId): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      Future.successful(Ok(view(request.property.addressFull, propertyReference, createDefaultNavBar())))
+      request.userAnswers.get(DeclarationPage(assessmentId)) match {
+        case Some(propertyReference) =>
+          Future.successful(Ok(view(request.property.addressFull, propertyReference, createDefaultNavBar())))
+        case None                    => Future.failed(new NotFoundException("Declaration data not found"))
+      }
   }
 }

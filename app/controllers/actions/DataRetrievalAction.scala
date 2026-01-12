@@ -28,20 +28,19 @@ import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DataRetrievalActionImpl @Inject()(
-                                         val sessionRepository: SessionRepository,
-                                         ngrConnector: NGRConnector
-                                       )(implicit val executionContext: ExecutionContext) extends DataRetrievalAction {
+class DataRetrievalActionImpl @Inject() (
+  val sessionRepository: SessionRepository,
+  ngrConnector: NGRConnector
+)(implicit val executionContext: ExecutionContext
+) extends DataRetrievalAction {
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     sessionRepository.get(request.credId).flatMap { userAnswersOpt =>
-      ngrConnector.getLinkedProperty.map {
-        case Some(property) =>
-          OptionalDataRequest(request.request, request.credId, userAnswersOpt, property)
-        case None => throw new NotFoundException("Property not found")
+      ngrConnector.getLinkedProperty map { property =>
+        OptionalDataRequest(request.request, request.credId, userAnswersOpt, property)
       }
     }
   }

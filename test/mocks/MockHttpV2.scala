@@ -29,7 +29,7 @@ import scala.concurrent.Future
 
 trait MockHttpV2 extends TestSupport with BeforeAndAfterEach {
 
-  lazy val mockHttpClientV2: HttpClientV2 = Mockito.mock(classOf[HttpClientV2])
+  lazy val mockHttpClientV2: HttpClientV2     = Mockito.mock(classOf[HttpClientV2])
   lazy val mockRequestBuilder: RequestBuilder = Mockito.mock(classOf[RequestBuilder])
 
   override def beforeEach(): Unit = {
@@ -54,8 +54,6 @@ trait MockHttpV2 extends TestSupport with BeforeAndAfterEach {
       .thenReturn(Future.successful(response))
   }
 
-
-
   def setupMockFailedHttpV2Get[T](url: String): OngoingStubbing[Future[T]] = {
     when(mockHttpClientV2
       .get(ArgumentMatchers.eq(url"$url"))(ArgumentMatchers.any())).thenReturn(mockRequestBuilder)
@@ -67,7 +65,7 @@ trait MockHttpV2 extends TestSupport with BeforeAndAfterEach {
   def setupMockHttpV2PostWithHeaderCarrier[T](url: String, headers: Seq[(String, String)])(response: T): OngoingStubbing[Future[T]] = {
     when(mockHttpClientV2.post(ArgumentMatchers.eq(url"$url"))(any()))
       .thenReturn(mockRequestBuilder)
-    when(mockRequestBuilder.setHeader(headers *))
+    when(mockRequestBuilder.setHeader(headers*))
       .thenReturn(mockRequestBuilder)
     when(mockRequestBuilder.withBody(any())(using any(), any(), any())).thenReturn(mockRequestBuilder)
     when(mockRequestBuilder.transform(any())).thenReturn(mockRequestBuilder)

@@ -35,13 +35,13 @@ class RatepayerRegistrationSpec extends PlaySpec {
         trnReferenceNumber = Some(TRNReferenceNumber(ReferenceType.TRN, "TRN-123")),
         isRegistered = Some(true)
       )
-      val json = Json.toJson(model)
+      val json  = Json.toJson(model)
       json.as[RatepayerRegistration] mustEqual model
     }
 
     "serialize and deserialize correctly with only required fields (all None except isRegistered)" in {
       val model = RatepayerRegistration()
-      val json = Json.toJson(model)
+      val json  = Json.toJson(model)
       json.as[RatepayerRegistration] mustEqual model
     }
 
@@ -57,4 +57,3 @@ class RatepayerRegistrationSpec extends PlaySpec {
     }
   }
 }
-

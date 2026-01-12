@@ -25,9 +25,11 @@ POST       /review/when-change-took-place                controllers.WhenChangeT
 GET        /review/when-change-took-place                controllers.WhenChangeTookPlaceController.onPageLoad(mode: Mode = CheckMode)
 POST       /review/when-change-took-place                controllers.WhenChangeTookPlaceController.onSubmit(mode: Mode = CheckMode)
 
-GET        /manage-business-rates-valuation/review/shop/property-review-complete/:propertyReference  controllers.SubmissionConfirmationController.onPageLoad(propertyReference: String)
+GET        /manage-business-rates-valuation/review/shop/property-review-complete/:assessmentId   controllers.SubmissionConfirmationController.onPageLoad(assessmentId: AssessmentId)
 
 GET        /manage-business-rates-valuation/review/shop/declaration/:assessmentId                controllers.DeclarationController.show(assessmentId: AssessmentId)
 POST       /manage-business-rates-valuation/review/shop/declaration/:assessmentId                controllers.DeclarationController.next(assessmentId: AssessmentId)
 
-GET        /review-your-property-details                 controllers.ReviewYourPropertyDetailsController.show
+GET        /review-your-property-details/:assessmentId                                           controllers.ReviewYourPropertyDetailsController.show(assessmentId: AssessmentId)
+
+GET        /your-property-details/:assessmentId                                                  controllers.ReviewDetailsController.onPageLoad(assessmentId: AssessmentId)

@@ -24,13 +24,12 @@ import models.requests.{IdentifierRequest, OptionalDataRequest}
 import scala.concurrent.{ExecutionContext, Future}
 
 class FakeDataRetrievalAction(answers: Option[UserAnswers]) extends DataRetrievalAction with TestData {
-  
+
   override protected def executionContext: ExecutionContext =
     scala.concurrent.ExecutionContext.Implicits.global
 
-  override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = {
+  override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] =
     Future.successful(
       OptionalDataRequest(request.request, request.credId, answers, property)
     )
-  }
 }

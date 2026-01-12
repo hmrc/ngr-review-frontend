@@ -21,7 +21,7 @@ import config.FrontendAppConfig
 import helpers.{ControllerSpecSupport, TestData}
 import models.NavBarPageContents.createDefaultNavBar
 import models.registration.CredId
-import models.{UserAnswers}
+import models.UserAnswers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.TryValues
@@ -36,7 +36,7 @@ import scala.concurrent.Future
 
 class DeclarationControllerSpec extends ControllerSpecSupport with TryValues {
 
-  lazy val view: DeclarationView = inject[DeclarationView]
+  lazy val view: DeclarationView            = inject[DeclarationView]
   lazy val errorTemplateView: ErrorTemplate = inject[ErrorTemplate]
 
   def minUserAnswers: UserAnswers =
@@ -59,9 +59,9 @@ class DeclarationControllerSpec extends ControllerSpecSupport with TryValues {
     ".show" should {
       "correctly render page" in {
         val result = controllerWithUserAnswers(Some(minUserAnswers)).show(assessmentId)(authenticatedFakeRequest)
-        status(result) mustBe 200
+        status(result)      mustBe 200
         contentType(result) mustBe Some("text/html")
-        charset(result) mustBe Some("utf-8")
+        charset(result)     mustBe Some("utf-8")
       }
 
     }
@@ -70,23 +70,23 @@ class DeclarationControllerSpec extends ControllerSpecSupport with TryValues {
       "redirect when accepted and DeclarationPage data is present without generated Reference" in {
         when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
         when(mockNGRNotifyConnector.postPropertyChanges(any(), any())(any())).thenReturn(Future.successful(ACCEPTED))
-        val result = controllerWithUserAnswers(Some(minUserAnswers.remove(DeclarationPage(assessmentId)).success.value)).next(assessmentId)(authenticatedFakeRequest)
+        val result =
+          controllerWithUserAnswers(Some(minUserAnswers.remove(DeclarationPage(assessmentId)).success.value)).next(assessmentId)(authenticatedFakeRequest)
 
-        status(result) mustBe SEE_OTHER
-        redirectLocation(result).value mustBe routes.SubmissionConfirmationController.onPageLoad(assessmentId.value).url
+        status(result)                 mustBe SEE_OTHER
+        redirectLocation(result).value mustBe routes.SubmissionConfirmationController.onPageLoad(assessmentId).url
       }
-
 
       "redirect when accepted and DeclarationPage data is present with generated Reference" in {
         when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
         when(mockNGRNotifyConnector.postPropertyChanges(any(), any())(any())).thenReturn(Future.successful(ACCEPTED))
         val result = controllerWithUserAnswers(Some(minUserAnswers)).next(assessmentId)(authenticatedFakeRequest)
 
-        status(result) mustBe SEE_OTHER
-        redirectLocation(result).value mustBe routes.SubmissionConfirmationController.onPageLoad(assessmentId.value).url
+        status(result)                 mustBe SEE_OTHER
+        redirectLocation(result).value mustBe routes.SubmissionConfirmationController.onPageLoad(assessmentId).url
       }
 
     }
   }
-  
+
 }

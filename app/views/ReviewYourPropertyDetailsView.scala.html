@@ -21,7 +21,7 @@
 @this(layout: Layout,
       govukButton: GovukButton)
 
-@(navigationBarContent: NavigationBarContent, address: String)(implicit request: RequestHeader, messages: Messages, appConfig: AppConfig)
+@(navigationBarContent: NavigationBarContent, assessmentId:AssessmentId, address: String)(implicit request: RequestHeader, messages: Messages, appConfig: AppConfig)
 
 @layout(
     pageTitle = Some(titleNoForm("reviewYourPropertyDetails.title")),
@@ -38,7 +38,7 @@
 
         @govukButton(
         ButtonViewModel(messages("site.continue"))
-        .asLink(routes.CheckYourAnswersController.onPageLoad().url)
+        .asLink(routes.ReviewDetailsController.onPageLoad(assessmentId).url)
         .withAttribute(("id", "continue"))
         )
 

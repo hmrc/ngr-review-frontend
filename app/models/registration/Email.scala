@@ -22,6 +22,6 @@ final case class Email(value: String) {
   override def toString: String = value
 }
 
-object Email  {
+object Email {
   implicit val format: Format[Email] = Json.format[Email]
 }

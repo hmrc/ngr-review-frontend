@@ -23,24 +23,25 @@ import play.api.test.Helpers.stubMessages
 
 class WhenChangeTookPlaceFormProviderSpec extends OptionFieldBehaviours {
 
-  private implicit val messages: Messages = stubMessages()
-  val form = new WhenChangeTookPlaceFormProvider()()
+  implicit private val messages: Messages = stubMessages()
+  val form                                = new WhenChangeTookPlaceFormProvider()()
 
   ".WhenChangeTookPlace" - {
 
-    val fieldName = "value"
-    val requiredKey = "whenChangeTookPlace.error.required"
-    val dateFieldName = "date"
+    val fieldName       = "value"
+    val requiredKey     = "whenChangeTookPlace.error.required"
+    val dateFieldName   = "date"
     val dateRequiredKey = "whenChangeTookPlace.date.error.required.all"
 
     "bind mandatory fields" in {
       val result = form.bind(
         Map(
-          fieldName -> "true",
-          s"$dateFieldName.day" -> "31",
+          fieldName               -> "true",
+          s"$dateFieldName.day"   -> "31",
           s"$dateFieldName.month" -> "8",
-          s"$dateFieldName.year" -> "2025"
-        ))
+          s"$dateFieldName.year"  -> "2025"
+        )
+      )
       result.errors mustBe empty
     }
 
@@ -52,7 +53,7 @@ class WhenChangeTookPlaceFormProviderSpec extends OptionFieldBehaviours {
     "fail the mandatory field validation on missing data" in {
       val result = form.bind(Map(fieldName -> "", dateFieldName -> ""))
       result.errors mustBe List(
-        FormError(fieldName, requiredKey),
+        FormError(fieldName, requiredKey)
       )
     }
   }

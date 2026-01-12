@@ -30,11 +30,10 @@ class WhenChangeTookPlaceSpec extends AnyFreeSpec with Matchers with ScalaCheckP
 
     "must deserialise valid values" in {
 
-      val gen = Gen.oneOf(WhenChangeTookPlace.values.toSeq)
+      val gen = Gen.oneOf(WhenChangeTookPlace.values)
 
       forAll(gen) {
         whenChangeTookPlace =>
-
           JsString(whenChangeTookPlace.toString).validate[WhenChangeTookPlace].asOpt.value mustEqual whenChangeTookPlace
       }
     }
@@ -45,18 +44,16 @@ class WhenChangeTookPlaceSpec extends AnyFreeSpec with Matchers with ScalaCheckP
 
       forAll(gen) {
         invalidValue =>
-
           JsString(invalidValue).validate[WhenChangeTookPlace] mustEqual JsError("error.invalid")
       }
     }
 
     "must serialise" in {
 
-      val gen = Gen.oneOf(WhenChangeTookPlace.values.toSeq)
+      val gen = Gen.oneOf(WhenChangeTookPlace.values)
 
       forAll(gen) {
         whenChangeTookPlace =>
-
           Json.toJson(whenChangeTookPlace) mustEqual JsString(whenChangeTookPlace.toString)
       }
     }

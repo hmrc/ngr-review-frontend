@@ -20,11 +20,11 @@ import enumeratum.*
 
 sealed trait AgentStatus extends EnumEntry
 
-object AgentStatus extends Enum[AgentStatus] with PlayJsonEnum[AgentStatus]  {
+object AgentStatus extends Enum[AgentStatus] with PlayJsonEnum[AgentStatus] {
 
   val values: IndexedSeq[AgentStatus] = findValues
 
-  case object Agent  extends AgentStatus
+  case object Agent extends AgentStatus
   case object Autonomous extends AgentStatus
 
 }

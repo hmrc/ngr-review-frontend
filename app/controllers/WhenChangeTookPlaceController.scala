@@ -33,22 +33,25 @@ import views.html.WhenChangeTookPlaceView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class WhenChangeTookPlaceController @Inject()(
-                                               sessionRepository: SessionRepository,
-                                               navigator: Navigator,
-                                               identify: IdentifierAction,
-                                               getData: DataRetrievalAction,
-                                               formProvider: WhenChangeTookPlaceFormProvider,
-                                               val controllerComponents: MessagesControllerComponents,
-                                               view: WhenChangeTookPlaceView
-                                             )(implicit ec: ExecutionContext, appConfig: AppConfig) extends FrontendBaseController with I18nSupport {
+class WhenChangeTookPlaceController @Inject() (
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  formProvider: WhenChangeTookPlaceFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: WhenChangeTookPlaceView
+)(implicit ec: ExecutionContext,
+  appConfig: AppConfig
+) extends FrontendBaseController
+  with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
       val form = formProvider()
 
       val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(WhenChangeTookPlacePage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -65,7 +68,7 @@ class WhenChangeTookPlaceController @Inject()(
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.getOrElse(UserAnswers(request.userId)).set(WhenChangeTookPlacePage, value))
-            _ <- sessionRepository.set(updatedAnswers)
+            _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(routes.IndexController.onPageLoad())
       )
   }

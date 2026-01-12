@@ -19,7 +19,7 @@ package models.auth
 import org.scalatest.freespec.AnyFreeSpec
 
 class EnrolmentSpec extends AnyFreeSpec {
-  
+
   "Enrolment" - {
     "must serialize and deserialize to/from JSON" in {
       val enrolment = Enrolment(
@@ -29,7 +29,7 @@ class EnrolmentSpec extends AnyFreeSpec {
         state = "Activated"
       )
 
-      val json = Enrolment.format.writes(enrolment)
+      val json                  = Enrolment.format.writes(enrolment)
       val deserializedEnrolment = Enrolment.format.reads(json).get
 
       assert(deserializedEnrolment == enrolment)

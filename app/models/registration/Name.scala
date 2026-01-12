@@ -20,6 +20,6 @@ import play.api.libs.json.{Json, OFormat}
 
 final case class Name(value: String)
 
-object Name  {
+object Name {
   implicit val format: OFormat[Name] = Json.format[Name]
 }
