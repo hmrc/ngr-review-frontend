@@ -26,9 +26,9 @@
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.HmrcStandardPageParams
 @import models.NavigationBarContent
 @import views.html.components.navigationBarComponent
+@import uk.gov.hmrc.govukfrontend.views.html.components.implicits._
 
 @this(
-    hmrcLanguageSelectHelper: HmrcLanguageSelectHelper,
     standardBetaBanner: StandardBetaBanner,
     fullWidthLayout: FullWidthLayout,
     twoThirdsLayout: TwoThirdsLayout,
@@ -55,25 +55,14 @@ additionalHeadBlock: Option[Html] = None
     }
 }
 
-@languageSelector = {
-    @hmrcLanguageSelectHelper()
-}
-
-@content = {
-    @if(appConfig.features.welshLanguageSupportEnabled()) {
-        @languageSelector
-    }
-    @contentBlock
-}
-
 @hmrcStandardPage(
     HmrcStandardPageParams(
         pageTitle = pageTitle,
         templateOverrides = TemplateOverrides(
             mainContentLayout = if (fullWidth) {
-                Some((_: Html) => fullWidthLayout(content, navbar))
+                Some((_: Html) => fullWidthLayout(contentBlock, navbar))
             } else {
-                Some((_: Html) => twoThirdsLayout(content, navbar))
+                Some((_: Html) => twoThirdsLayout(contentBlock, navbar))
             },
             additionalHeadBlock = Some(headScripts)
         ),
@@ -82,4 +71,4 @@ additionalHeadBlock: Option[Html] = None
             phaseBanner = Some(standardBetaBanner()),
         )
     )
-)(content)
+)(contentBlock)
