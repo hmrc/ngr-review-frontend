@@ -16,22 +16,13 @@
 
 package connectors
 
-import helpers.TestData
 import config.AppConfig
+import helpers.TestData
 import mocks.MockHttpV2
 import models.propertyLinking.{PropertyLinkingUserAnswers, VMVProperty}
 import models.registration.*
 import models.registration.ReferenceType.TRN
-import models.{AssessmentId, ReviewChangesUserAnswers}
-import org.mockito.Mockito.when
-import play.api.http.Status.{ACCEPTED, NOT_FOUND}
-import play.api.test.Helpers.{await, defaultAwaitTimeout}
-import uk.gov.hmrc.http.{HttpResponse, NotFoundException}
-
-import java.time.LocalDate
-import scala.concurrent.Future
-import models.registration.RatepayerRegistration
-import models.{AssessmentId, ReviewDetails}
+import models.{AssessmentId, ReviewChangesUserAnswers, ReviewDetails}
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.{any, eq as eqTo}
 import org.mockito.Mockito.*
@@ -41,46 +32,22 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.matchers.should.Matchers.shouldEqual
 import org.scalatest.time.{Millis, Seconds, Span}
 import org.scalatestplus.mockito.MockitoSugar
+import play.api.http.Status.{ACCEPTED, NOT_FOUND}
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.http.client.HttpClientV2
-import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
+import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse, NotFoundException}
 
 import java.net.URL
+import java.time.LocalDate
 import scala.concurrent.{ExecutionContext, Future}
 
 class NGRNotifyConnectorSpec extends MockHttpV2 {
   val assessmentId                           = AssessmentId("test-assessment-id")
   val ngrNotifyConnector: NGRNotifyConnector = new NGRNotifyConnector(mockHttpClientV2, mockConfig)
 
-  val userAnswers: ReviewChangesUserAnswers = ReviewChangesUserAnswers(
-    declarationRef = Some("1234")
-  )
-
   override def beforeEach(): Unit = {
     super.beforeEach()
     mockConfig.features.bridgeEndpointEnabled(true)
-  }
-
-  "postPropertyChanges" when {
-    "Successfully return a response  when provided correct body" in {
-      setupMockHttpV2PostWithHeaderCarrier(
-        s"${mockConfig.ngrNotifyUrl}/ngr-notify/example/$assessmentId",
-        Seq("Content-Type" -> "application/json")
-      )(HttpResponse(NOT_FOUND, ""))
-      val result: Future[Int] = ngrNotifyConnector.postPropertyChanges(userAnswers, assessmentId)
-      result.futureValue mustBe NOT_FOUND
-    }
-
-    "endpoint returns an error" in {
-      mockConfig.features.bridgeEndpointEnabled(true)
-      setupMockHttpV2PostWithHeaderCarrier(
-        s"${mockConfig.ngrNotifyUrl}/ngr-notify/example/$assessmentId",
-        Seq("Content-Type" -> "application/json")
-      )(HttpResponse(ACCEPTED, ""))
-
-      val result: Future[Int] = ngrNotifyConnector.postPropertyChanges(userAnswers, assessmentId)
-      result.futureValue mustBe ACCEPTED
-
-    }
   }
 
   "getReviewDetails" when {

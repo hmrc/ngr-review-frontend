@@ -41,10 +41,7 @@ class DeclarationController @Inject() (
   view: DeclarationView,
   authenticate: IdentifierAction,
   getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
-  sessionRepository: SessionRepository,
-  connector: NGRNotifyConnector,
-  errorTemplate: ErrorTemplate
+  sessionRepository: SessionRepository
 )(implicit ec: ExecutionContext,
   appConfig: AppConfig
 ) extends FrontendBaseController
@@ -64,10 +61,6 @@ class DeclarationController @Inject() (
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.getOrElse(UserAnswers(request.userId)).set(DeclarationPage(assessmentId), generateRef))
           _              <- sessionRepository.set(updatedAnswers)
-          response       <- connector.postPropertyChanges(ReviewChangesUserAnswers(declarationRef = Some(generateRef)), assessmentId)
-        } yield response match {
-          case ACCEPTED => Redirect(routes.SubmissionConfirmationController.onPageLoad(assessmentId))
-        }
-
+        } yield Redirect(routes.SubmissionConfirmationController.onPageLoad(assessmentId))
     }
 }

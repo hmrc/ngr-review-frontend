@@ -17,6 +17,7 @@
 package connectors
 
 import mocks.MockHttpV2
+import models.propertyLinking.{PropertyLinkingUserAnswers, VMVProperty}
 import models.registration.*
 import models.registration.ReferenceType.TRN
 
@@ -41,6 +42,28 @@ class NGRConnectorSpec extends MockHttpV2 {
       setupMockHttpV2Get(s"${mockConfig.nextGenerationRatesUrl}/next-generation-rates/get-ratepayer")(None)
       val result: Future[Option[RatepayerRegistrationValuation]] = ngrConnector.getRatepayer(credId)
       result.futureValue mustBe None
+    }
+  }
+
+  "getLinkedProperty" when {
+    "Successfully return a VMVProperty" in {
+      val vmvProperty                                            = VMVProperty(
+        uarn = 987654321L,
+        addressFull = "123 Test Street, Testville",
+        localAuthorityCode = "123",
+        localAuthorityReference = "LAREF1",
+        valuations = List.empty
+      )
+      val propertyLinkingUserAnswers: PropertyLinkingUserAnswers =
+        PropertyLinkingUserAnswers(credId, vmvProperty, None, None, None, None, None)
+      setupMockHttpV2Get(s"${mockConfig.nextGenerationRatesUrl}/next-generation-rates/get-property-linking-user-answers")(Some(propertyLinkingUserAnswers))
+      val result: Future[VMVProperty]                            = ngrConnector.getLinkedProperty
+      result.futureValue mustBe vmvProperty
+    }
+    "propertyLinkingUserAnswers not found" in {
+      setupMockHttpV2Get(s"${mockConfig.nextGenerationRatesUrl}/next-generation-rates/get-property-linking-user-answers")(None)
+      val result: Future[VMVProperty] = ngrConnector.getLinkedProperty
+      an[Exception] mustBe thrownBy(result.futureValue)
     }
   }
 }

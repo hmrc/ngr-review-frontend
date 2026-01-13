@@ -20,8 +20,8 @@ import base.SpecBase
 import config.FrontendAppConfig
 import helpers.{ControllerSpecSupport, TestData}
 import models.NavBarPageContents.createDefaultNavBar
-import models.registration.CredId
 import models.UserAnswers
+import models.registration.CredId
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.TryValues
@@ -48,10 +48,7 @@ class DeclarationControllerSpec extends ControllerSpecSupport with TryValues {
     view,
     fakeAuth,
     fakeData(userAnswers),
-    fakeRequireData(userAnswers),
-    mockSessionRepository,
-    mockNGRNotifyConnector,
-    errorTemplateView
+    mockSessionRepository
   )
 
   "Declaration Controller" must {
@@ -67,25 +64,13 @@ class DeclarationControllerSpec extends ControllerSpecSupport with TryValues {
     }
 
     ".next" should {
-      "redirect when accepted and DeclarationPage data is present without generated Reference" in {
-        when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
-        when(mockNGRNotifyConnector.postPropertyChanges(any(), any())(any())).thenReturn(Future.successful(ACCEPTED))
-        val result =
-          controllerWithUserAnswers(Some(minUserAnswers.remove(DeclarationPage(assessmentId)).success.value)).next(assessmentId)(authenticatedFakeRequest)
-
-        status(result)                 mustBe SEE_OTHER
-        redirectLocation(result).value mustBe routes.SubmissionConfirmationController.onPageLoad(assessmentId).url
-      }
-
       "redirect when accepted and DeclarationPage data is present with generated Reference" in {
         when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
-        when(mockNGRNotifyConnector.postPropertyChanges(any(), any())(any())).thenReturn(Future.successful(ACCEPTED))
         val result = controllerWithUserAnswers(Some(minUserAnswers)).next(assessmentId)(authenticatedFakeRequest)
 
         status(result)                 mustBe SEE_OTHER
         redirectLocation(result).value mustBe routes.SubmissionConfirmationController.onPageLoad(assessmentId).url
       }
-
     }
   }
 
