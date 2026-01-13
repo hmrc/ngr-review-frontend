@@ -47,17 +47,6 @@ class NGRNotifyConnector @Inject() (
 
   private def url(path: String, assessmentId: AssessmentId): URL = url"${appConfig.ngrNotifyUrl}/ngr-notify/$path/$assessmentId"
 
-  def postPropertyChanges(userAnswers: ReviewChangesUserAnswers, assessmentId: AssessmentId)(implicit hc: HeaderCarrier): Future[Int] =
-    if (appConfig.features.bridgeEndpointEnabled()) {
-      http.post(url("example", assessmentId)) // TODO add correct url when endpoint on notify is built
-        .withBody(Json.toJson(userAnswers))
-        .setHeader(headers.toSeq*)
-        .execute[HttpResponse]
-        .map(_.status)
-    } else {
-      Future.successful(ACCEPTED)
-    }
-
   def getReviewDetails(assessmentId: AssessmentId)(implicit hc: HeaderCarrier): Future[Option[ReviewDetails]] = {
     implicit val rds: HttpReads[ReviewDetails] = readFromJson
     http.get(url("review-properties", assessmentId))

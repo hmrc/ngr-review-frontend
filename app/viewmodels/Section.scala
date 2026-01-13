@@ -18,4 +18,4 @@ package viewmodels
 
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 
-case class Section(title: Option[String], subHeading: Option[String], rows: SummaryList)
+case class Section(subHeading: Option[String], rows: SummaryList)

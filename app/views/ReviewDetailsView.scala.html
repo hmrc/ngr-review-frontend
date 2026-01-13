@@ -31,15 +31,10 @@ govukButton: GovukButton
 
     @list.map { section =>
 
-            @section.title.map { title =>
-                <h2 class="govuk-heading-l">@messages(title)</h2>
-            }
-         @if(section.rows.rows.size > 0) {
-            @section.subHeading.map { subHeading =>
-                <h2 class="govuk-heading-m">@messages(subHeading)</h2>
-            }
-             @govukSummaryList(section.rows)
-         }
+        @section.subHeading.map { subHeading =>
+            <h2 class="govuk-heading-m">@messages(subHeading)</h2>
+        }
+       @govukSummaryList(section.rows)
     }
 
     <div class="govuk-button-group">
