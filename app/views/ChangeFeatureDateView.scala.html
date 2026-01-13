@@ -14,19 +14,23 @@
  * limitations under the License.
  *@
 
+@import models.NavigationBarContent
+@import config.AppConfig
+@import viewmodels.LegendSize
+
 @this(
-    layout: templates.Layout,
+    layout: Layout,
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
     govukRadios: GovukRadios,
     govukButton: GovukButton
 )
 
-@(form: Form[?], mode: Mode)(implicit request: Request[?], messages: Messages)
+@(form: Form[?], assessmentId: AssessmentId, address: String, navigationBarContent: NavigationBarContent)(implicit request: RequestHeader, messages: Messages, appConfig: AppConfig)
 
-@layout(pageTitle = title(form, messages("changeFeatureDate.title"))) {
+@layout(pageTitle = Some(title(form, messages("changeFeatureDate.title")))) {
 
-    @formHelper(action = routes.ChangeFeatureDateController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.ChangeFeatureDateController.onSubmit(assessmentId), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
@@ -35,12 +39,15 @@
         @govukRadios(
             RadiosViewModel.yesNo(
                 field = form("value"),
-                legend = LegendViewModel(messages("changeFeatureDate.heading")).asPageHeading()
+                legend = LegendViewModel(messages("changeFeatureDate.heading")).asPageHeading(LegendSize.Large)
             )
         )
-
-        @govukButton(
-            ButtonViewModel(messages("site.continue"))
-        )
+        <div class="govuk-button-group">
+            @govukButton(
+                ButtonViewModel(messages("site.continue"))
+            )
+            <a class="govuk-link" href="@routes.ReviewDetailsController.onPageLoad(assessmentId)">@messages("site.cancel")</a>
+        </div>
     }
+
 }

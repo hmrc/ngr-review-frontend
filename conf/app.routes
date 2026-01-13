@@ -34,7 +34,5 @@ GET        /review-your-property-details/:assessmentId                          
 
 GET        /your-property-details/:assessmentId                                                  controllers.ReviewDetailsController.onPageLoad(assessmentId: AssessmentId)
 
-GET        /changeFeatureDate                        controllers.ChangeFeatureDateController.onPageLoad(mode: Mode = NormalMode)
-POST       /changeFeatureDate                        controllers.ChangeFeatureDateController.onSubmit(mode: Mode = NormalMode)
-GET        /changeChangeFeatureDate                  controllers.ChangeFeatureDateController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeChangeFeatureDate                  controllers.ChangeFeatureDateController.onSubmit(mode: Mode = CheckMode)
+GET        /change-feature-date/:assessmentId                        controllers.ChangeFeatureDateController.onPageLoad(assessmentId: AssessmentId)
+POST       /change-feature-date/:assessmentId                        controllers.ChangeFeatureDateController.onSubmit(assessmentId: AssessmentId)

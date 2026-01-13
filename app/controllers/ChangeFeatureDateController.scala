@@ -16,57 +16,54 @@
 
 package controllers
 
-import controllers.actions._
+import config.AppConfig
+import controllers.actions.*
 import forms.ChangeFeatureDateFormProvider
-import javax.inject.Inject
-import models.Mode
+import models.NavBarPageContents.createDefaultNavBar
+import models.{AssessmentId, Mode}
 import navigation.Navigator
 import pages.ChangeFeatureDatePage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ChangeFeatureDateView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ChangeFeatureDateController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: ChangeFeatureDateFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: ChangeFeatureDateView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ChangeFeatureDateController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  formProvider: ChangeFeatureDateFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ChangeFeatureDateView
+)(implicit appConfig: AppConfig
+) extends FrontendBaseController
+  with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(assessmentId: AssessmentId): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
-
-      val preparedForm = request.userAnswers.get(ChangeFeatureDatePage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm, mode))
+      Ok(view(form, assessmentId, request.property.addressFull, createDefaultNavBar()))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(assessmentId: AssessmentId): Action[AnyContent] = (identify andThen getData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
+          Future.successful(BadRequest(view(formWithErrors, assessmentId, request.property.addressFull, createDefaultNavBar()))),
         value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ChangeFeatureDatePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ChangeFeatureDatePage, mode, updatedAnswers))
+          Future.successful {
+            val redirectUrl = if (value)
+              s"${appConfig.ngrPhysicalStartUrl}/when-complete-change/${assessmentId.value}"
+            else
+              s"${appConfig.ngrPhysicalStartUrl}/have-you-changed-use-of-space/${assessmentId.value}"
+            Redirect(redirectUrl)
+          }
       )
   }
 }

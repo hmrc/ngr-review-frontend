@@ -18,7 +18,7 @@ package base
 
 import actions.*
 import controllers.actions.*
-import models.UserAnswers
+import models.{AssessmentId, UserAnswers}
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
@@ -44,6 +44,7 @@ trait SpecBase extends AnyFreeSpec with Matchers with TryValues with OptionValue
   def fakeRequireData(answers: Option[UserAnswers]) = new FakeDataRequiredAction(answers)
 
   val userAnswersId: String = "id"
+  val assessmentId = AssessmentId("assessmentId")
 
   def emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
 

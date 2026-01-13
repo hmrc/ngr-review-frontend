@@ -42,7 +42,6 @@ import scala.concurrent.Future
 
 class ReviewDetailsControllerSpec extends SpecBase with BeforeAndAfterEach with TestData {
 
-  val assessmentId                               = AssessmentId("test-assessment-id")
   val mockNgrNotifyConnector: NGRNotifyConnector = mock[NGRNotifyConnector]
 
   override def beforeEach(): Unit = {
