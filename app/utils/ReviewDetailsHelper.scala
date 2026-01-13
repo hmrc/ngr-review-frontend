@@ -41,16 +41,16 @@ object ReviewDetailsHelper {
       actions = Seq.empty
     )
 
-    val totalSection = buildSection(None, None, Seq(totalAreaRow), noBorder = true)
+    val totalSection = buildSection(None, Seq(totalAreaRow), noBorder = true)
 
     val parkingSpaces  = reviewDetails.parkingInfo.flatMap(_.spaces).map(spaceSummaryRow)
     val parkingSection = Option.when(parkingSpaces.nonEmpty)(
-      buildSection(Some("reviewDetails.parking"), None, parkingSpaces)
+      buildSection(Some("reviewDetails.parking"), parkingSpaces)
     ).toSeq
 
     val otherSpaces           = reviewDetails.otherAdditionInfo.flatMap(_.spaces).map(spaceSummaryRow)
     val otherAdditionsSection = Option.when(otherSpaces.nonEmpty)(
-      buildSection(Some("reviewDetails.other.additions"), None, otherSpaces)
+      buildSection(Some("reviewDetails.other.additions"), otherSpaces)
     ).toSeq
 
     totalSection +: (reviewDetails.floorsInfo.flatMap(createSummaryList) ++ otherAdditionsSection ++ parkingSection)
@@ -68,14 +68,13 @@ object ReviewDetailsHelper {
     val spaceRows: List[SummaryListRow] = floor.spaces map spaceSummaryRow
 
     Seq(
-      buildSection(Some(floor.label.replaceAll(" ", "_").toLowerCase())),
-      buildSection(None, Some("reviewDetails.floor.space"), spaceRows)
+      buildSection(Some(floor.label.replaceAll(" ", "_").toLowerCase()), spaceRows)
     )
   }
 
-  private def buildSection(heading: Option[String], subHeading: Option[String] = None, rows: Seq[SummaryListRow] = Seq.empty, noBorder: Boolean = false)
+  private def buildSection(subHeading: Option[String] = None, rows: Seq[SummaryListRow] = Seq.empty, noBorder: Boolean = false)
     : Section =
     val base    = SummaryListViewModel(rows)
     val summary = if (noBorder) base.withCssClass("govuk-summary-list--no-border") else base
-    Section(heading, subHeading, summary)
+    Section(subHeading, summary)
 }

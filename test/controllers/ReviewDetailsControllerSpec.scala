@@ -67,7 +67,7 @@ class ReviewDetailsControllerSpec extends SpecBase with BeforeAndAfterEach with 
         actions = Seq.empty
       )
 
-      val sections = Seq(Section(None, None, SummaryListViewModel(Seq(totalAreaRow)).withCssClass("govuk-summary-list--no-border")))
+      val sections = Seq(Section(None, SummaryListViewModel(Seq(totalAreaRow)).withCssClass("govuk-summary-list--no-border")))
 
       val sampleResponse: ReviewDetails =
         ReviewDetails(floorsInfo = List.empty, otherAdditionInfo = List.empty, parkingInfo = List.empty, totalArea = 100, fullAddress = None)

@@ -46,26 +46,25 @@ class ReviewDetailsHelperSpec extends AnyFreeSpec {
       )
 
       val sections: Seq[Section] = ReviewDetailsHelper.createSectionList(sampleReviewDetails)(messages)
-      sections.size                              mustBe 7
+      println("Sections: " + sections)
+      sections.size                              mustBe 5
       sections.head.rows.rows.size               mustBe 1
       sections.head.rows.rows.head.key.content   mustBe Text("reviewDetails.total.area")
       sections.head.rows.rows.head.value.content mustBe HtmlContent("123.45m<sup>2</sup>")
-      sections(1).title                          mustBe Some("first_floor")
+      sections(1).subHeading                     mustBe Some("first_floor")
       sections(2).rows.rows.size                 mustBe 2
       sections(2).rows.rows.head.key.content     mustBe Text("Office Space")
       sections(2).rows.rows.head.value.content   mustBe HtmlContent("50m<sup>2</sup>")
-      sections(3).title                          mustBe Some("second_floor")
+      sections(2).rows.rows(1).key.content       mustBe Text("Conference Room")
+      sections(2).rows.rows(1).value.content     mustBe HtmlContent("20m<sup>2</sup>")
+      sections(3).subHeading                     mustBe Some("reviewDetails.other.additions")
+      sections(3).rows.rows.size                 mustBe 2
+      sections(3).rows.rows.head.key.content     mustBe Text("Office Space")
+      sections(3).rows.rows.head.value.content   mustBe HtmlContent("50m<sup>2</sup>")
+      sections(4).subHeading                     mustBe Some("reviewDetails.parking")
       sections(4).rows.rows.size                 mustBe 2
       sections(4).rows.rows.head.key.content     mustBe Text("Office Space")
       sections(4).rows.rows.head.value.content   mustBe HtmlContent("50m<sup>2</sup>")
-      sections(5).title                          mustBe Some("reviewDetails.other.additions")
-      sections(5).rows.rows.size                 mustBe 2
-      sections(5).rows.rows.head.key.content     mustBe Text("Office Space")
-      sections(5).rows.rows.head.value.content   mustBe HtmlContent("50m<sup>2</sup>")
-      sections(6).title                          mustBe Some("reviewDetails.parking")
-      sections(6).rows.rows.size                 mustBe 2
-      sections(6).rows.rows.head.key.content     mustBe Text("Office Space")
-      sections(6).rows.rows.head.value.content   mustBe HtmlContent("50m<sup>2</sup>")
     }
 
     "generate empty sections when ReviewDetails has no floors, other additions or parking info" in {
