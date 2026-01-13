@@ -46,12 +46,17 @@ class ReviewDetailsHelperSpec extends AnyFreeSpec {
       )
 
       val sections: Seq[Section] = ReviewDetailsHelper.createSectionList(sampleReviewDetails)(messages)
-      println("Sections: " + sections)
       sections.size                              mustBe 5
       sections.head.rows.rows.size               mustBe 1
       sections.head.rows.rows.head.key.content   mustBe Text("reviewDetails.total.area")
       sections.head.rows.rows.head.value.content mustBe HtmlContent("123.45m<sup>2</sup>")
       sections(1).subHeading                     mustBe Some("first_floor")
+      sections(1).rows.rows.size                 mustBe 2
+      sections(1).rows.rows.head.key.content     mustBe Text("Office Space")
+      sections(1).rows.rows.head.value.content mustBe HtmlContent("50m<sup>2</sup>")
+      sections(1).rows.rows(1).key.content mustBe Text("Conference Room")
+      sections(1).rows.rows(1).value.content mustBe HtmlContent("20m<sup>2</sup>")
+      sections(2).subHeading                     mustBe Some("second_floor")
       sections(2).rows.rows.size                 mustBe 2
       sections(2).rows.rows.head.key.content     mustBe Text("Office Space")
       sections(2).rows.rows.head.value.content   mustBe HtmlContent("50m<sup>2</sup>")
