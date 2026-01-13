@@ -109,3 +109,9 @@ floor_level_3f_to_3f = Third floor
 floor_level_4f_to_4f = Fourth floor
 floor_level_5f_to_5f = Fifth floor
 floor_level_6f_to_6f = Sixth floor
+
+changeFeatureDate.title = changeFeatureDate
+changeFeatureDate.heading = changeFeatureDate
+changeFeatureDate.checkYourAnswersLabel = changeFeatureDate
+changeFeatureDate.error.required = Select yes if changeFeatureDate
+changeFeatureDate.change.hidden = ChangeFeatureDate

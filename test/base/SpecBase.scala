@@ -53,8 +53,6 @@ trait SpecBase extends AnyFreeSpec with Matchers with TryValues with OptionValue
   implicit val ec: ExecutionContext            = scala.concurrent.ExecutionContext.Implicits.global
   val mockSessionRepository: SessionRepository = mock[SessionRepository]
 
-  def onwardRoute: Call = Call("GET", "/foo")
-
   protected def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder =
 
     new GuiceApplicationBuilder()

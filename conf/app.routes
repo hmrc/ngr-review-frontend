@@ -33,3 +33,8 @@ POST       /manage-business-rates-valuation/review/shop/declaration/:assessmentI
 GET        /review-your-property-details/:assessmentId                                           controllers.ReviewYourPropertyDetailsController.show(assessmentId: AssessmentId)
 
 GET        /your-property-details/:assessmentId                                                  controllers.ReviewDetailsController.onPageLoad(assessmentId: AssessmentId)
+
+GET        /changeFeatureDate                        controllers.ChangeFeatureDateController.onPageLoad(mode: Mode = NormalMode)
+POST       /changeFeatureDate                        controllers.ChangeFeatureDateController.onSubmit(mode: Mode = NormalMode)
+GET        /changeChangeFeatureDate                  controllers.ChangeFeatureDateController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeChangeFeatureDate                  controllers.ChangeFeatureDateController.onSubmit(mode: Mode = CheckMode)
