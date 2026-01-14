@@ -57,7 +57,7 @@ class FrontendAppConfig @Inject() (configuration: Configuration, sc: ServicesCon
   override val ngrLogoutUrl: String                                    = s"$dashboardHost/ngr-dashboard-frontend/signout"
   override val nextGenerationRatesUrl: String                          = sc.baseUrl("next-generation-rates")
   override val ngrNotifyUrl: String                                    = sc.baseUrl("ngr-notify")
-  override def ngrPhysicalStartUrl(assessmentId: AssessmentId): String = s"$physicalHost/ngr-physical-frontend/when-complete-change/:assessmentId"
+  override def ngrPhysicalStartUrl(assessmentId: AssessmentId): String = s"$physicalHost/ngr-physical-frontend/review/when-change-took-place/$assessmentId"
   override val features                                                = new Features()(configuration)
 
   override val registrationUrl: String = s"$registrationHost/ngr-login-register-frontend/register"
